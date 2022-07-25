@@ -1,3 +1,0 @@
-C:/Users/trungpq/Downloads/Console_Client_Server_Application-master/src/Admin/cmake-build-debug/CMakeFiles/Admin.dir
-C:/Users/trungpq/Downloads/Console_Client_Server_Application-master/src/Admin/cmake-build-debug/CMakeFiles/edit_cache.dir
-C:/Users/trungpq/Downloads/Console_Client_Server_Application-master/src/Admin/cmake-build-debug/CMakeFiles/rebuild_cache.dir
