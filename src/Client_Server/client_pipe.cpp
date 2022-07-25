@@ -28,12 +28,9 @@ std::string ClientPipe::GetLastErrorAsString(){
   return message;
 }
 
-
 void ClientPipe::init() {
 
-
   sendPackageToAdmin("INIT_CONNECTION");
-
 
   printf("Connecting to server pipe...");
 
@@ -48,7 +45,6 @@ void ClientPipe::init() {
           FILE_ATTRIBUTE_NORMAL,
           nullptr
   );
-
 
   if (pipe == nullptr||pipe == INVALID_HANDLE_VALUE) {
       printf("Failed T.T Reporting to admin\n");
@@ -145,22 +141,6 @@ void ClientPipe::sendToAdmin(char *packets, int totalSize) {
 
 }
 
-//void ClientPipe::sendPackageToAdmin(PacketTypes type, int id) {
-//  Packet pack;
-//  pack.packet_type = type;
-//  pack.id = id ;
-//
-//  const unsigned int packet_size = sizeof (pack);
-//  char packet_data[packet_size];
-//
-//  pack.serialize(packet_data);
-//
-//  iResult = false;
-//  while (!iResult) {
-//      sendToAdmin(packet_data,packet_size);
-//  }
-//}
-
 void ClientPipe::sendPackageToAdmin(char* type) {
 //  Packet pack;
 //  pack.packet_type = type;
@@ -250,7 +230,6 @@ void ClientPipe::receive(char *recvbuf) {
 
           return ;
       }
-
   }
 
   printf("Done!\n");

@@ -64,17 +64,6 @@ public:
   void sockSend(char * packets, int totalSize);
   void sockReceive();
 
-  //***************PIPE********************
-//    static int fileDescriptors[2];
-//    HANDLE pipe;
-//    HANDLE adminPipe;
-//
-//    void pipeInit();
-//    void pipeSend(char * packets, int totalSize);
-//    void pipeReceive();
-//    void pipeSendToAdmin(char *packets, int totalSize);
-//    void pipeSignalActiveAdmin();
-
   //type is type of ipc to use: 0->socket, 1-> pipe
   ServerNetwork(int type,HANDLE cadmin_write_pipe, HANDLE cadmin_read_pipe);
   ~ServerNetwork();

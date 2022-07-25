@@ -1,7 +1,3 @@
-//
-// Created by Trung on 7/18/2022.
-//
-
 #ifndef TASK7_CLIENTNETWORK_H
 #define TASK7_CLIENTNETWORK_H
 
@@ -51,19 +47,6 @@ public:
   void sockInit();
   void sockSend(char *packet_data,unsigned int packet_size);
   void sockReceive(char * recvbuf);
-
-  //*********pipe********
-//    HANDLE pipe;
-//    HANDLE adminPipe;
-//
-//    void pipeInit();
-//    void pipeSend(char * packets, int totalSize);
-//    void pipeReceive(char * recvbuf);
-//
-//    void pipeSendToAdmin(char *packets, int totalSize);
-//    void sendPackageToAdmin(PacketTypes type, int id);
-//    void pipeReceiveFromAdmin(char *recvbuf);
-//    void pipeReadAdmin();
 
   ClientNetwork(bool isServer,int type);
   ~ClientNetwork();

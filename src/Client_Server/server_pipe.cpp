@@ -28,47 +28,6 @@ void ServerPipe::init(HANDLE cadmin_write_pipe, HANDLE cadmin_read_pipe) {
 
 
   printf("Complete!\n");
-
-//  printf("Connecting to Admin write named pipe...");
-////  admin_write_pipe = CreateFile(
-////      _T("\\\\.\\pipe\\my_admin_write_pipe"),
-////      GENERIC_READ, // only need read access
-////      FILE_SHARE_READ,
-////      nullptr,
-////      OPEN_EXISTING,
-////      FILE_ATTRIBUTE_NORMAL,
-////      nullptr
-////  );
-//  admin_write_pipe = cadmin_write_pipe;
-//
-//  if (admin_write_pipe == nullptr || admin_write_pipe == INVALID_HANDLE_VALUE) {
-//      printf("Failed...Exiting\n");
-//
-//      exit(1);
-//  }
-//
-//  printf("Complete!\n");
-//
-//  printf("Connecting to Admin read named pipe...");
-////  admin_read_pipe = CreateFile(
-////      _T("\\\\.\\pipe\\my_admin_read_pipe"),
-////      GENERIC_WRITE, // only need read access
-////      FILE_SHARE_WRITE,
-////      nullptr,
-////      OPEN_EXISTING,
-////      FILE_ATTRIBUTE_NORMAL,
-////      nullptr
-////  );
-//
-//  admin_read_pipe = cadmin_read_pipe;
-//
-//  if (admin_read_pipe == nullptr || admin_read_pipe == INVALID_HANDLE_VALUE) {
-//      printf("Failed...Exiting\n");
-//
-//      exit(1);
-//  }
-//
-//  printf("Complete!\n");
 }
 
 void ServerPipe::send(char *packets, int totalSize) {

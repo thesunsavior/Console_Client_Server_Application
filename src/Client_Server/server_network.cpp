@@ -110,7 +110,7 @@ void ServerNetwork::sockInit() {
   hints.ai_flags = AI_PASSIVE;
 
   // Resolve the server address and port
-  iResult = getaddrinfo(NULL, DEFAULT_PORT, &hints, &result);
+  iResult = getaddrinfo(nullptr, DEFAULT_PORT, &hints, &result);
 
   if ( iResult != 0 ) {
       printf("getaddrinfo failed with error: %d\n", iResult);

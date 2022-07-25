@@ -1,7 +1,3 @@
-//
-// Created by Trung on 7/18/2022.
-//
-
 #ifndef TASK7_NETWORKDATA_H
 #define TASK7_NETWORKDATA_H
 

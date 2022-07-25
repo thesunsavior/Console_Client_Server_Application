@@ -2,8 +2,6 @@
 
 #include <tchar.h>
 
-
-
 ClientNetwork::ClientNetwork(bool is_server, int type) {
   this->is_server = is_server;
   this->IPC_type = type ;
@@ -16,7 +14,6 @@ ClientNetwork::ClientNetwork(bool is_server, int type) {
   }
 
 }
-
 
 ClientNetwork::~ClientNetwork()
 = default;
@@ -120,8 +117,6 @@ void ClientNetwork::resolveAdminData(){
 //  }
 }
 
-
-
 //**************** SOCKET ****************
 
 void ClientNetwork::sockInit() {
@@ -194,12 +189,8 @@ void ClientNetwork::sockInit() {
 
   }
 
-
-
   // no longer need address info for server
   freeaddrinfo(result);
-
-
 
   // if connection failed
   if (ConnectSocket == INVALID_SOCKET) {
@@ -212,7 +203,6 @@ void ClientNetwork::sockInit() {
           this->makeServer(); // allocate
           return ;
       }
-
   }
 
   printf("Connected!!!!\n");

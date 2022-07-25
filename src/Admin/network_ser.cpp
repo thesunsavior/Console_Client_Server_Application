@@ -1,6 +1,3 @@
-//
-// Created by Trung on 7/18/2022.
-//
 #include "network_ser.h"
 
 int NetworkServices::sendMessage(SOCKET curSocket, char * message, int messageSize)
