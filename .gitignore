@@ -1,0 +1,6 @@
+.idea
+cmake-build-debug
+src/Admin/.idea
+src/Admin/cmake-build-debug
+src/Client_Server/.idea
+src/Client_Server/cmake-build-debug

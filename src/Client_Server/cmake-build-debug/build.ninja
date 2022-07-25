@@ -51,42 +51,42 @@ build cmake_object_order_depends_target_Client_Server: phony || CMakeFiles/Clien
 
 build CMakeFiles/Client_Server.dir/client_network.cpp.obj: CXX_COMPILER__Client_Server_Debug C$:/Users/trungpq/Downloads/Console_Client_Server_Application-master/src/Client_Server/client_network.cpp || cmake_object_order_depends_target_Client_Server
   DEP_FILE = CMakeFiles\Client_Server.dir\client_network.cpp.obj.d
-  FLAGS = -g -std=gnu++14
+  FLAGS = -g
   INCLUDES = -IC:/Users/trungpq/Downloads/Console_Client_Server_Application-master/src/Client_Server/.
   OBJECT_DIR = CMakeFiles\Client_Server.dir
   OBJECT_FILE_DIR = CMakeFiles\Client_Server.dir
 
 build CMakeFiles/Client_Server.dir/client_pipe.cpp.obj: CXX_COMPILER__Client_Server_Debug C$:/Users/trungpq/Downloads/Console_Client_Server_Application-master/src/Client_Server/client_pipe.cpp || cmake_object_order_depends_target_Client_Server
   DEP_FILE = CMakeFiles\Client_Server.dir\client_pipe.cpp.obj.d
-  FLAGS = -g -std=gnu++14
+  FLAGS = -g
   INCLUDES = -IC:/Users/trungpq/Downloads/Console_Client_Server_Application-master/src/Client_Server/.
   OBJECT_DIR = CMakeFiles\Client_Server.dir
   OBJECT_FILE_DIR = CMakeFiles\Client_Server.dir
 
 build CMakeFiles/Client_Server.dir/main.cpp.obj: CXX_COMPILER__Client_Server_Debug C$:/Users/trungpq/Downloads/Console_Client_Server_Application-master/src/Client_Server/main.cpp || cmake_object_order_depends_target_Client_Server
   DEP_FILE = CMakeFiles\Client_Server.dir\main.cpp.obj.d
-  FLAGS = -g -std=gnu++14
+  FLAGS = -g
   INCLUDES = -IC:/Users/trungpq/Downloads/Console_Client_Server_Application-master/src/Client_Server/.
   OBJECT_DIR = CMakeFiles\Client_Server.dir
   OBJECT_FILE_DIR = CMakeFiles\Client_Server.dir
 
 build CMakeFiles/Client_Server.dir/network_ser.cpp.obj: CXX_COMPILER__Client_Server_Debug C$:/Users/trungpq/Downloads/Console_Client_Server_Application-master/src/Client_Server/network_ser.cpp || cmake_object_order_depends_target_Client_Server
   DEP_FILE = CMakeFiles\Client_Server.dir\network_ser.cpp.obj.d
-  FLAGS = -g -std=gnu++14
+  FLAGS = -g
   INCLUDES = -IC:/Users/trungpq/Downloads/Console_Client_Server_Application-master/src/Client_Server/.
   OBJECT_DIR = CMakeFiles\Client_Server.dir
   OBJECT_FILE_DIR = CMakeFiles\Client_Server.dir
 
 build CMakeFiles/Client_Server.dir/server_network.cpp.obj: CXX_COMPILER__Client_Server_Debug C$:/Users/trungpq/Downloads/Console_Client_Server_Application-master/src/Client_Server/server_network.cpp || cmake_object_order_depends_target_Client_Server
   DEP_FILE = CMakeFiles\Client_Server.dir\server_network.cpp.obj.d
-  FLAGS = -g -std=gnu++14
+  FLAGS = -g
   INCLUDES = -IC:/Users/trungpq/Downloads/Console_Client_Server_Application-master/src/Client_Server/.
   OBJECT_DIR = CMakeFiles\Client_Server.dir
   OBJECT_FILE_DIR = CMakeFiles\Client_Server.dir
 
 build CMakeFiles/Client_Server.dir/server_pipe.cpp.obj: CXX_COMPILER__Client_Server_Debug C$:/Users/trungpq/Downloads/Console_Client_Server_Application-master/src/Client_Server/server_pipe.cpp || cmake_object_order_depends_target_Client_Server
   DEP_FILE = CMakeFiles\Client_Server.dir\server_pipe.cpp.obj.d
-  FLAGS = -g -std=gnu++14
+  FLAGS = -g
   INCLUDES = -IC:/Users/trungpq/Downloads/Console_Client_Server_Application-master/src/Client_Server/.
   OBJECT_DIR = CMakeFiles\Client_Server.dir
   OBJECT_FILE_DIR = CMakeFiles\Client_Server.dir
