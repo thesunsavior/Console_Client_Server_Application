@@ -157,12 +157,13 @@ void ClientPipe::receiveFromAdmin(char *recvbuf) {
 
   DWORD total_available_bytes;
 
+  char *temp = "";
   PeekNamedPipe(admin_write_pipe,
                 0,
                 0,
-                reinterpret_cast<LPDWORD>(127 * sizeof(char *)),
                 0,
-                &total_available_bytes);
+                &total_available_bytes,
+                0);
 
   if (total_available_bytes <= 0) {
     std::cout << "Nothing in admin pipe" << std::endl;

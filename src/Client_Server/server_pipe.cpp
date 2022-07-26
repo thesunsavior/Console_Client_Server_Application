@@ -3,6 +3,7 @@
 #include <tchar.h>
 #include <winbase.h>
 
+#include <chrono>
 #include <iostream>
 
 int32_t ServerPipe::iResult = true;
