@@ -5,6 +5,10 @@
 
 #include <iostream>
 
+HANDLE ClientPipe::pipe = INVALID_HANDLE_VALUE;
+HANDLE ClientPipe::admin_read_pipe = INVALID_HANDLE_VALUE;
+HANDLE ClientPipe::admin_write_pipe = INVALID_HANDLE_VALUE;
+
 std::string GetLastErrorAsString() {
   //Get the error message ID, if any.
   DWORD errorMessageID = ::GetLastError();

@@ -1,8 +1,7 @@
 #ifndef CLIENTSERVER_CLIENTNETWORK_H
 #define CLIENTSERVER_CLIENTNETWORK_H
-
-#include <Windows.h>
 #include <winsock2.h>
+#include <Windows.h>
 #include <ws2tcpip.h>
 
 #include <chrono>
@@ -12,7 +11,6 @@
 
 #include "client_pipe.h"
 #include "network_data.h"
-#include "network_ser.h"
 #include "server_network.h"
 
 // port to connect sockets through
@@ -25,13 +23,7 @@ class ClientNetwork {
   public:
   const char *const DEFAULT_PORT = "6881";
 
-  ServerNetwork *server{};
-
-  // for error checking function calls in Winsock library
   int iResult{};
-
-  // socket for client to connect to server
-  SOCKET ConnectSocket{};
 
   void sendActionPackets();
 

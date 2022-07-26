@@ -4,8 +4,11 @@
 
 #include <iostream>
 
+
+
 ClientNetwork::ClientNetwork(bool is_server) {
   this->is_server = is_server;
+
   if (!is_server) {
     pipe_controller.init();
   }
@@ -58,8 +61,7 @@ void ClientNetwork::makeServer() {
   CloseHandle(pipe_controller.pipe);
   CloseHandle(pipe_controller.admin_read_pipe);
   CloseHandle(pipe_controller.admin_write_pipe);
-
-  this->server = new ServerNetwork(pipe_controller.admin_write_pipe, pipe_controller.admin_read_pipe);
+  std::cout << "***************************************** SERVER INIT ****************************************" << std::endl;
 }
 
 void ClientNetwork::resolveAdminData() {

@@ -19,8 +19,6 @@ add_executable(Client_Server
         src/Client_Server/IPC.h
         src/Client_Server/main.cpp
         src/Client_Server/network_data.h
-        src/Client_Server/network_ser.cpp
-        src/Client_Server/network_ser.h
         src/Client_Server/pipe.h
         src/Client_Server/server_network.cpp
         src/Client_Server/server_network.h

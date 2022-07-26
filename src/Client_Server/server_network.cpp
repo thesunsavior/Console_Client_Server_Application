@@ -5,29 +5,18 @@
 
 #include <ctime>
 #include <iostream>
+#include <thread>
 
 
-unsigned int ServerNetwork::client_id;
-
-ServerNetwork::ServerNetwork(HANDLE cadmin_write_pipe, HANDLE cadmin_read_pipe) {
-  std::cout<<"***************************************** SERVER INIT ****************************************"<<std::endl;
-  ServerNetwork::client_id = 0;
-
-
-  pipe_controller.init(cadmin_write_pipe, cadmin_read_pipe);
-
-  //  pipe_controller.signalActiveAdmin();
-}
+ServerNetwork::ServerNetwork() {}
 
 // send data to all clients
 void ServerNetwork::sendToAll(char* packets, int totalSize) {
-  pipe_controller.send(packets, totalSize);
+  ServerPipe::send(packets, totalSize);
 }
 
 
 void ServerNetwork::receiveFromClients() {
-  pipe_controller.connect();
-  sendActionPackets();
 }
 
 
@@ -47,5 +36,12 @@ void ServerNetwork::sendActionPackets() {
 
 
 void ServerNetwork::update() {
-  receiveFromClients();
+  ServerPipe::init();
+  bool connection = ServerPipe::connect();
+
+  if(!connection){
+    return;
+  }
+
+  std::thread t1(&ServerNetwork::sendActionPackets);
 }

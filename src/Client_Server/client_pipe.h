@@ -11,9 +11,9 @@
 
 class ClientPipe : public Pipe {
   public:
-  void init() override;
-  void send(char *packets, int totalSize) override{};
-  void receive(char *recvbuf) override;
+  void init() ;
+  void send(char *packets, int totalSize) {};
+  void receive(char *recvbuf);
 
   boolean connectToAdmin();
   boolean connectToAdminRead();
@@ -22,6 +22,11 @@ class ClientPipe : public Pipe {
 
   void sendPackageToAdmin(char *type);
   void receiveFromAdmin(char *recvbuf);
+
+  int iResult;
+  static HANDLE pipe;
+  static HANDLE admin_write_pipe;
+  static HANDLE admin_read_pipe;
 
   ClientPipe() {}
   ~ClientPipe() {}

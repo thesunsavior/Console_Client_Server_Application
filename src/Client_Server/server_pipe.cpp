@@ -5,9 +5,14 @@
 
 #include <iostream>
 
+int ServerPipe::iResult = true;
+HANDLE ServerPipe::pipe = INVALID_HANDLE_VALUE;
+HANDLE ServerPipe::admin_write_pipe = INVALID_HANDLE_VALUE;
+HANDLE ServerPipe::admin_read_pipe = INVALID_HANDLE_VALUE;
+
 std::string GetLastErrorAsString();
 
-void ServerPipe::init(HANDLE cadmin_write_pipe, HANDLE cadmin_read_pipe) {
+void ServerPipe::init() {
   std::cout << "Creating server pipe...";
   pipe = CreateNamedPipe(
       _T("\\\\.\\pipe\\my_pipe"),// name of the pipe
@@ -53,15 +58,16 @@ void ServerPipe::send(char *packets, int totalSize) {
   std::cout << "Server done!" << std::endl;
 }
 
-void ServerPipe::connect() {
+bool ServerPipe::connect() {
   std::cout << "Waitting to connect to client....";
 
-  BOOL result = ConnectNamedPipe(pipe, nullptr);
-  if (!result) {
+  iResult = ConnectNamedPipe(pipe, nullptr);
+  if (!iResult) {
     std::cout << "Failed...error:" << GetLastErrorAsString() << std::endl;
-    return;
+    return false;
   }
   std::cout << "Client connected to server!!!" << std::endl;
+  return true;
 }
 
 boolean ServerPipe::connectToAdmin() {

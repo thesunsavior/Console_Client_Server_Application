@@ -13,8 +13,6 @@ add_executable(Client_Server
         IPC.h
         main.cpp
         network_data.h
-        network_ser.cpp
-        network_ser.h
         pipe.h
         server_network.cpp
         server_network.h

@@ -10,7 +10,7 @@ int main() {
 
   while (true) {
     if (client->isServer()) {
-      client->server->update();
+      ServerNetwork::update();
     } else {
       client->update();
       client->sendActionPackets();

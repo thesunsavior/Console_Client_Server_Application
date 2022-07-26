@@ -9,17 +9,17 @@
 
 class Pipe : public IPC {
   public:
-  virtual void send(char *packets, int totalSize) = 0;
-  virtual void receive(char *recvbuf) = 0;
-  virtual void init(){};
+      static void send(char *packets, int totalSize){};
+      static void receive(char *recvbuf) {};
+      static void init(){};
 
-  Pipe() = default;
-  ~Pipe() = default;
+      Pipe() = default;
+      ~Pipe() = default;
 
-  int iResult;
-  HANDLE pipe;
-  HANDLE admin_write_pipe;
-  HANDLE admin_read_pipe;
+      static int iResult;
+      static HANDLE pipe;
+      static HANDLE admin_write_pipe;
+      static HANDLE admin_read_pipe;
 };
 
-#endif/
+#endif
