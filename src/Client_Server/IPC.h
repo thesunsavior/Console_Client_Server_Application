@@ -7,9 +7,9 @@
 
 class IPC {
   public:
-      static void init() {};
-      static void send(char *packets, int totalSize) {};
-      static void receive(char *recvbuf) {};
+  static void init(){};
+  static void send(char *packets, int totalSize){};
+  static void receive(char *recvbuf){};
 };
 
 #endif//FINALTASK_IPC_H

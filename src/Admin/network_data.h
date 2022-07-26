@@ -9,23 +9,23 @@ enum PacketTypes {
 
   INIT_CONNECTION = 0,
 
-  ACTION_EVENT  = 1,
+  ACTION_EVENT = 1,
 
-  DEAD_SERVER   = 2,
+  DEAD_SERVER = 2,
 
 };
 
 class Packet {
-public:
+  public:
   unsigned int packet_type;
   unsigned int id;
 
-  void serialize(char * data) {
-      memcpy(data, this, sizeof(Packet));
+  void serialize(char* data) {
+    memcpy(data, this, sizeof(Packet));
   }
 
-  void deserialize(char * data) {
-      memcpy(this, data, sizeof(Packet));
+  void deserialize(char* data) {
+    memcpy(this, data, sizeof(Packet));
   }
 };
-#endif //TASK7_NETWORKDATA_H
+#endif//TASK7_NETWORKDATA_H
