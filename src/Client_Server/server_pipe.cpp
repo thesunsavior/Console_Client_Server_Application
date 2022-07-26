@@ -5,7 +5,7 @@
 
 #include <iostream>
 
-int ServerPipe::iResult = true;
+int32_t ServerPipe::iResult = true;
 HANDLE ServerPipe::pipe = INVALID_HANDLE_VALUE;
 HANDLE ServerPipe::admin_write_pipe = INVALID_HANDLE_VALUE;
 HANDLE ServerPipe::admin_read_pipe = INVALID_HANDLE_VALUE;
@@ -34,7 +34,7 @@ void ServerPipe::init() {
   std::cout << "Complete!" << std::endl;
 }
 
-void ServerPipe::send(char *packets, int totalSize) {
+void ServerPipe::send(char *packets, int32_t totalSize) {
   std::cout << "Sending data to client...";
 
 
@@ -86,7 +86,7 @@ boolean ServerPipe::connectToAdmin() {
     return false;
   }
 
-  printf("Complete!\n");
+  std::cout << "Complete!" << std::endl;
 
   std::cout << "Connecting to Admin read named pipe...";
   admin_read_pipe = CreateFile(
@@ -137,7 +137,7 @@ void ServerPipe::sendToAdmin(char *packets, int totalSize) {
 
 void ServerPipe::signalActiveAdmin() {
   char *packet_data = "ACTION_EVENT";
-  const unsigned int packet_size = strlen(packet_data);
+  const uint32_t packet_size = strlen(packet_data);
 
   iResult = false;
   while (!iResult) {

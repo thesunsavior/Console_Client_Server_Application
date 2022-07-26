@@ -1,7 +1,7 @@
 #ifndef CLIENTSERVER_CLIENTNETWORK_H
 #define CLIENTSERVER_CLIENTNETWORK_H
-#include <winsock2.h>
 #include <Windows.h>
+#include <winsock2.h>
 #include <ws2tcpip.h>
 
 #include <chrono>
@@ -23,13 +23,13 @@ class ClientNetwork {
   public:
   const char *const DEFAULT_PORT = "6881";
 
-  int iResult{};
+  int32_t iResult{};
 
   void sendActionPackets();
 
   void update();
 
-  int receivePackets(char *);
+  int32_t receivePackets(char *);
   void makeServer();
   bool isServer();
   void resolveAdminData();

@@ -12,18 +12,18 @@
 class ClientPipe : public Pipe {
   public:
   void init() ;
-  void send(char *packets, int totalSize) {};
+  void send(char *packets, int32_t totalSize) {};
   void receive(char *recvbuf);
 
-  boolean connectToAdmin();
-  boolean connectToAdminRead();
-  boolean connectToAdminWrite();
+  bool connectToAdmin();
+  bool connectToAdminRead();
+  bool connectToAdminWrite();
   void sendToAdmin(char *packets, int totalSize);
 
   void sendPackageToAdmin(char *type);
   void receiveFromAdmin(char *recvbuf);
 
-  int iResult;
+  int32_t iResult;
   static HANDLE pipe;
   static HANDLE admin_write_pipe;
   static HANDLE admin_read_pipe;

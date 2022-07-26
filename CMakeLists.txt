@@ -2,7 +2,7 @@ cmake_minimum_required(VERSION 3.22)
 project(Console_Client_Server_Application_master)
 
 set(CMAKE_CXX_STANDARD 17)
-
+set (CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -static-libstdc++ -static-libgcc")
 
 add_executable(Admin
         src/Admin/admin.cpp

@@ -5,7 +5,6 @@
 #include <iostream>
 
 
-
 ClientNetwork::ClientNetwork(bool is_server) {
   this->is_server = is_server;
 
@@ -16,7 +15,7 @@ ClientNetwork::ClientNetwork(bool is_server) {
 
 ClientNetwork::~ClientNetwork() = default;
 
-int ClientNetwork::receivePackets(char* recvbuf) {
+int32_t ClientNetwork::receivePackets(char* recvbuf) {
   if (is_server) return 0;
   pipe_controller.receive(recvbuf);
   return iResult;
@@ -25,7 +24,7 @@ int ClientNetwork::receivePackets(char* recvbuf) {
 void ClientNetwork::sendActionPackets() {
   if (is_server) return;
 
-  const unsigned int packet_size = sizeof(Packet);
+  const uint32_t packet_size = sizeof(Packet);
   char packet_data[packet_size];
 
   Packet packet;

@@ -65,11 +65,11 @@ void ClientPipe::init() {
   std::cout << "Complete!" << std::endl;
 }
 
-boolean ClientPipe::connectToAdmin() {
+bool ClientPipe::connectToAdmin() {
   return connectToAdminWrite() && connectToAdminRead();
 }
 
-boolean ClientPipe::connectToAdminRead() {
+bool ClientPipe::connectToAdminRead() {
   std::cout << "Connecting to Admin read named pipe...";
   admin_read_pipe = CreateFile(
       _T("\\\\.\\pipe\\my_admin_read_pipe"),
@@ -89,7 +89,7 @@ boolean ClientPipe::connectToAdminRead() {
   return true;
 }
 
-boolean ClientPipe::connectToAdminWrite() {
+bool ClientPipe::connectToAdminWrite() {
   std::cout << "Connecting to Admin write named pipe...";
   admin_write_pipe = CreateFile(
       _T("\\\\.\\pipe\\my_admin_write_pipe"),
@@ -110,7 +110,7 @@ boolean ClientPipe::connectToAdminWrite() {
   return true;
 }
 
-void ClientPipe::sendToAdmin(char *packets, int totalSize) {
+void ClientPipe::sendToAdmin(char *packets, int32_t totalSize) {
 
   std::cout << "Connecting to admin..." << std::endl;
   while (!connectToAdminWrite()) { sleep(rand() % 3); };

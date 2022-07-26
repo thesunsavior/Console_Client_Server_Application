@@ -11,7 +11,7 @@
 ServerNetwork::ServerNetwork() {}
 
 // send data to all clients
-void ServerNetwork::sendToAll(char* packets, int totalSize) {
+void ServerNetwork::sendToAll(char* packets, int32_t totalSize) {
   ServerPipe::send(packets, totalSize);
 }
 
@@ -39,7 +39,7 @@ void ServerNetwork::update() {
   ServerPipe::init();
   bool connection = ServerPipe::connect();
 
-  if(!connection){
+  if (!connection) {
     return;
   }
 
