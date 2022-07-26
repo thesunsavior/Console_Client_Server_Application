@@ -1,5 +1,5 @@
-#ifndef TASK7_NETWORKDATA_H
-#define TASK7_NETWORKDATA_H
+#ifndef ADMIN_NETWORKDATA_H
+#define ADMIN_NETWORKDATA_H
 
 #include <string.h>
 

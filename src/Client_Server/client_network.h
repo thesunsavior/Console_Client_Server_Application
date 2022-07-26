@@ -1,29 +1,28 @@
-#ifndef TASK7_CLIENTNETWORK_H
-#define TASK7_CLIENTNETWORK_H
+#ifndef CLIENTSERVER_CLIENTNETWORK_H
+#define CLIENTSERVER_CLIENTNETWORK_H
 
-#include <winsock2.h>
 #include <Windows.h>
+#include <winsock2.h>
 #include <ws2tcpip.h>
 
 #include <chrono>
-#include <thread>
 #include <cstdio>
 #include <string>
+#include <thread>
 
-#include "network_ser.h"
-#include "network_data.h"
-#include "server_network.h"
 #include "client_pipe.h"
+#include "network_data.h"
+#include "network_ser.h"
+#include "server_network.h"
 
 // port to connect sockets through
 // Need to link with Ws2_32.lib, Mswsock.lib, and Advapi32.lib
-#pragma comment (lib, "Ws2_32.lib")
-#pragma comment (lib, "Mswsock.lib")
-#pragma comment (lib, "AdvApi32.lib")
+#pragma comment(lib, "Ws2_32.lib")
+#pragma comment(lib, "Mswsock.lib")
+#pragma comment(lib, "AdvApi32.lib")
 
-class ClientNetwork
-{
-public:
+class ClientNetwork {
+  public:
   const char *const DEFAULT_PORT = "6881";
 
   ServerNetwork *server{};
@@ -39,24 +38,18 @@ public:
   void update();
 
   int receivePackets(char *);
-  void makeServer ();
-  bool isServer() ;
+  void makeServer();
+  bool isServer();
   void resolveAdminData();
 
-  //*********SOCKET********
-  void sockInit();
-  void sockSend(char *packet_data,unsigned int packet_size);
-  void sockReceive(char * recvbuf);
-
-  ClientNetwork(bool isServer,int type);
+  ClientNetwork(bool isServer);
   ~ClientNetwork();
 
-private:
+  private:
   bool is_server;
-  int IPC_type;
-  char network_data[MAX_PACKET_SIZE]{};
+  char network_data[MAX_PACKET_SIZE];
   ClientPipe pipe_controller;
 };
 
 
-#endif //TASK7_CLIENTNETWORK_H
+#endif//TASK7_CLIENTNETWORK_H

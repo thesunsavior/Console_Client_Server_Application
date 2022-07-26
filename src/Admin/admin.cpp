@@ -3,14 +3,7 @@
 #include <cstdio>
 #include <iostream>
 
-
-Admin::Admin() {
-  client_id = 0 ;
-  total_process=0;
-  is_send = false;
-}
-
-std::string Admin::GetLastErrorAsString()
+std::string GetLastErrorAsString()
 {
   //Get the error message ID, if any.
   DWORD errorMessageID = ::GetLastError();
@@ -34,46 +27,41 @@ std::string Admin::GetLastErrorAsString()
   return message;
 }
 
-void Admin::connectWrite()  {
-  printf("Waitting to connect to client to Admin write...");
+Admin::Admin() {
+  client_id = 0 ;
+  total_process=0;
+  is_send = false;
+}
 
-  iResult = ConnectNamedPipe( this->admin_Write_Pipe, NULL);
+
+
+void Admin::connectWrite()  {
+  std::cout<<"Waitting to connect to client to Admin write...";
+
+  iResult = ConnectNamedPipe( this->admin_Write_Pipe, nullptr);
   if (!iResult) {
-      printf("Connection failed...error:");
-      std::cout<<GetLastErrorAsString()<<std::endl;
-//      printf("\n");
-//        // look up error code here using GetLastError()
-//        CloseHandle(pipe); // close the pipe
-//        system("pause");
-//      exit(1) ;
+      std::cout<<"Connection failed...error:"<<GetLastErrorAsString()<<std::endl;
       return;
   }
 
-  printf("Detected client connect to listen to Admin!\n");
+  std::cout<<"Detected client connect to listen to Admin!"<<std::endl;
 
 }
 
 void Admin::connectRead()  {
-  printf("Waitting to connect to client to Admin read...");
-  iResult = ConnectNamedPipe(this->admin_Read_Pipe, NULL);
+  std::cout<<"Waitting to connect to client to Admin read...";
+  iResult = ConnectNamedPipe(this->admin_Read_Pipe, nullptr);
   if (!iResult) {
-    printf("Connection failed...error:");
-    std::cout<<GetLastErrorAsString()<<std::endl;
-//    printf("\n");
-// look up error code here using GetLastError()
-//        CloseHandle(pipe); // close the pipe
-//        system("pause");
-//        exit(1) ;
+    std::cout<<"Connection failed...error:"<<GetLastErrorAsString()<<std::endl;
       return;
   }
-
-  printf("Detected client connect to write to Admin!\n");
+  std::cout<<"Detected client connect to write to Admin!"<<std::endl;
 }
 
 //establish a read pipe and write pipe for a new client
 void Admin::init(){
   //set up admin write pipe
-  printf("Creating admin write named pipe...");
+  std::cout<<"Creating admin write named pipe...";
   this->admin_Write_Pipe = CreateNamedPipe(
       _T("\\\\.\\pipe\\my_admin_write_pipe"), // name of the pipe
       PIPE_ACCESS_OUTBOUND, // Write only
@@ -82,18 +70,18 @@ void Admin::init(){
       0, // no outbound buffer
       0, // no inbound buffer
       0, // use default wait time
-      NULL // use default security attributes
+      nullptr // use default security attributes
   );
 
-  if ( this->admin_Write_Pipe == NULL ||  this->admin_Write_Pipe == INVALID_HANDLE_VALUE) {
-    printf("Failed....Exiting\n");
-    exit(1);
+  if ( this->admin_Write_Pipe == nullptr ||  this->admin_Write_Pipe == INVALID_HANDLE_VALUE) {
+    std::cout<<" failed...error:"<<GetLastErrorAsString()<<std::endl;
+    std::exit(1);
   }
 
-  printf("Admin Write pipe sucessfully created\n");
+  std::cout<<"Admin Write pipe sucessfully created"<<std::endl;
 
   //set up admin read pipe
-  printf("Creating admin read named pipe...");
+  std::cout<<"Creating admin read named pipe...";
   admin_Read_Pipe = CreateNamedPipe(
       _T("\\\\.\\pipe\\my_admin_read_pipe"), // name of the pipe
       PIPE_ACCESS_INBOUND, // read only
@@ -102,19 +90,18 @@ void Admin::init(){
       0, // no outbound buffer
       0, // no inbound buffer
       0, // use default wait time
-      NULL // use default security attributes
+      nullptr // use default security attributes
   );
 
-  if (admin_Read_Pipe == NULL || admin_Read_Pipe == INVALID_HANDLE_VALUE) {
-    printf("Failed....Exiting\n");
+  if (admin_Read_Pipe == nullptr || admin_Read_Pipe == INVALID_HANDLE_VALUE) {
+    std::cout<<" failed...error:"<<GetLastErrorAsString()<<std::endl;
     exit(1);
   }
-
-  printf("Admin read pipe sucessfully created\n");
+  std::cout<<"Admin read pipe sucessfully created"<<std::endl;
 }
 
 void Admin::receive(char * recvbuf) {
-  printf("Admin Reading data from pipe...");
+  std::cout<<"Admin Reading data from pipe...";
   // The read operation will block until there is data to read
 
   DWORD numBytesRead = 0;
@@ -123,23 +110,23 @@ void Admin::receive(char * recvbuf) {
           recvbuf, // the data from the pipe will be put here
           256 * sizeof(char*), // number of bytes allocated
           &numBytesRead, // this will store number of bytes actually read
-          NULL // not using overlapped IO
+      nullptr // not using overlapped IO
   );
 
   iResult  = result;
 
   if (result) {
-      printf("Number of bytes Read:%d...",numBytesRead);
+    std::cout<<"Number of bytes Read:..."<<numBytesRead<<std::endl;
+
   } else {
-      printf("Failed to read data T.T \n");
+    std::cout<<"failed...error:"<<GetLastErrorAsString()<<std::endl;
   }
 
-  printf("Done!\n");
-
+  std::cout<<"Done"<<std::endl;
 }
 
 void Admin::send(char *packets, int totalSize) {
-  printf("Sending data to client...");
+  std::cout<<"Sending data to client...";
 
   // This call blocks until a client process reads all the data
   DWORD numBytesWritten = 0;
@@ -149,34 +136,27 @@ void Admin::send(char *packets, int totalSize) {
           packets, // data to send
           totalSize, // length of data to send (bytes)
           &numBytesWritten, // will store actual amount of data sent
-          NULL // not using overlapped IO
+          nullptr // not using overlapped IO
   );
 
   if (iResult) {
-      printf("Number of bytes sent:%d...",numBytesWritten);
+    std::cout<<"Number of bytes sent:..."<<numBytesWritten<<std::endl;
   } else {
-      printf("Failed to send data...T.T \n");
-      // look up error code here using GetLastError()
+    std::cout<<"failed...error:"<<GetLastErrorAsString()<<std::endl;
       return;
   }
-
-
-  printf("Server done!\n");
+  std::cout<<"Server done!"<<std::endl;
 }
 
 void Admin::receiveFromClients(){
-
-  iResult = true ;
-  if (iResult){
+  iResult = false ;
+  while (!iResult){
       memset(network_data, 0, sizeof network_data);
       receive(network_data);
 
-//      Packet packet;
-//      packet.deserialize(networkData);
-
       if (!iResult){
-          printf("Failed to receive \n");
-//          break;
+          printf("Admin restart \n");
+          continue ;
       }
 
       printf("ADMIN has receive packet\n");
@@ -197,56 +177,12 @@ void Admin::receiveFromClients(){
           serverAssign();
         }
       }else {
-        printf("weird message: ");
-        printf(network_data);
-        printf("\n");
+        std::cout<<"weird message: "<<network_data<<std::endl;
       }
-//      switch (networkData) {
-//
-//          case "INIT_CONNECTION": {
-//              printf("ADMIN initializing CLIENT ID %d\n",client_id+1);
-//
-//              totalProcess++;
-//              countDown = totalProcess;
-//
-//              break;
-//          }
-//
-//          case ACTION_EVENT:{
-//              printf("Active server confirmed\n");
-//              break;
-//          }
-//
-//          case DEAD_SERVER:{
-//              countDown -- ;
-//              if (countDown == 0 ){
-//                  countDown = totalProcess;
-//                  printf("SERVER IS DEAD! ASSIGNING NEW SERVER\n");
-//                  serverAssign();
-//                  break;
-//              }
-//          }
-//
-//
-//          default:
-//              printf("error in packet types\n");
-//              break;
-//      }
   }
-
 }
 
 void Admin::serverAssign(){
-//  Packet serverPack;
-//  serverPack.packet_type = ACTION_EVENT;
-//  serverPack.id = 0;
-
-//  const unsigned int packet_size = sizeof(serverPack);
-//  char *packet_data = "ACTION_EVENT";
-//  const unsigned int packet_size = strlen(packet_data);
-////  serverPack.serialize(packet_data);
-//
-//  send(packet_data,packet_size);
   is_send = true;
   send_content = "ACTION_EVENT";
 }
@@ -256,13 +192,14 @@ void Admin::update() {
 //  connectRead();
 
   if(is_send){
-    printf("This turn is for sending message\n");
+    std::cout<<"This turn is for sending message"<<std::endl;
     send(send_content, strlen(send_content));
     while(!iResult)
       send(send_content, strlen(send_content));
     is_send = false ;
   }else {
-    printf("This turn is for reading message\n");
+    std::cout<<"This turn is for reading message"<<std::endl;
     receiveFromClients();
   }
 }
+

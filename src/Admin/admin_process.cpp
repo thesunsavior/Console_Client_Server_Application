@@ -17,16 +17,13 @@ int main(){
     admin.init();
     admin.connectWrite();
     if (!admin.iResult && GetLastError() != ERROR_PIPE_CONNECTED) {
-//      sleep (1);
       continue;
     }
     admin.connectRead();
     if (!admin.iResult && GetLastError() != ERROR_PIPE_CONNECTED){
-//      sleep(1);
       continue;}
 
     update();
-//    admin.update();
   }
 
   return 0;

@@ -9,8 +9,7 @@ add_executable(Admin
         src/Admin/admin.h
         src/Admin/admin_process.cpp
         src/Admin/network_data.h
-        src/Admin/network_ser.cpp
-        src/Admin/network_ser.h)
+        )
 
 add_executable(Client_Server
         src/Client_Server/client_network.cpp
