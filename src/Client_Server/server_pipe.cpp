@@ -51,7 +51,7 @@ void ServerPipe::send(char *packets, int32_t totalSize, HANDLE myPipe) {
   );
 
   if (iResult) {
-    std::cout << "Number of bytes sent:..." << numBytesWritten;
+    std::cout << "Number of bytes sent:" << numBytesWritten<<" ";
   } else {
     std::cout << "Failed...error:" << GetLastErrorAsString() << std::endl;
   }
