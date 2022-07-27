@@ -27,6 +27,7 @@ class ClientPipe{
   static HANDLE pipe;
   static HANDLE admin_write_pipe;
   static HANDLE admin_read_pipe;
+  static bool reported;
 
   ClientPipe() {}
   ~ClientPipe() {}

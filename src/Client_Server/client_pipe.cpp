@@ -8,6 +8,7 @@
 HANDLE ClientPipe::pipe = INVALID_HANDLE_VALUE;
 HANDLE ClientPipe::admin_read_pipe = INVALID_HANDLE_VALUE;
 HANDLE ClientPipe::admin_write_pipe = INVALID_HANDLE_VALUE;
+bool ClientPipe::reported = false;
 
 std::string GetLastErrorAsString() {
   //Get the error message ID, if any.
@@ -194,17 +195,19 @@ void ClientPipe::receive(char *recvbuf) {
   iResult = result;
 
   if (result) {
+    reported = false;
     std::cout << "Number of bytes Read:" << numBytesRead << std::endl;
   } else {
     std::cout << "Failed to read data T.T , error:" << GetLastErrorAsString() << std::endl;
 
-    if (GetLastError() == ERROR_BROKEN_PIPE) {
+    if (GetLastError() == ERROR_BROKEN_PIPE && !reported) {
       std::cout << "Server died, reporting. Wait for assignment" << std::endl;
       // look up error code here using GetLastError()
 
       sendPackageToAdmin("DEAD_SERVER");
+      reported = true;
 
-      sleep(5);
+      sleep(rand()%5);
 
       return;
     }

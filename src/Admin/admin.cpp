@@ -4,6 +4,7 @@
 #include <iostream>
 
 int Admin::total_process;
+int Admin::count_down =0;
 
 
 std::string GetLastErrorAsString() {
@@ -158,21 +159,22 @@ void Admin::receiveFromClients() {
     receive(network_data);
 
     if (!iResult) {
-      printf("Admin restart \n");
+      std::cout << "Admin restart " << std::endl;
       continue;
     }
-
-    printf("ADMIN has receive packet\n");
+    std::cout << "ADMIN has receive packet " << std::endl;
 
     if (strcmp(network_data, "INIT_CONNECTION") == 0) {
-      printf("ADMIN initializing CLIENT ID %d\n", total_process + 1);
+      std::cout << "ADMIN initializing CLIENT ID "<< total_process + 1<< std::endl;
       total_process++;
       count_down = total_process;
     } else if (strcmp(network_data, "ACTION_EVENT") == 0) {
-      printf("Active server confirmed\n");
+      std::cout << "Active server confirmed" << std::endl;
     } else if (strcmp(network_data, "DEAD_SERVER") == 0) {
-      printf("Dead Reported\n");
+      std::cout << "Dead Reported" << std::endl;
       count_down--;
+      std::cout << count_down <<" Has not reported on "<<total_process<<" total"<< std::endl;
+
       if (count_down <= 0) {
         total_process--;
         count_down = total_process;
