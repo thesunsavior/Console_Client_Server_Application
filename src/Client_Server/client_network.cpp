@@ -51,7 +51,6 @@ void ClientNetwork::update() {
   std::cout << "Client-time report: " << network_data << std::endl;
   CloseHandle(pipe_controller.admin_read_pipe);
   CloseHandle(pipe_controller.admin_write_pipe);
-
 }
 
 bool ClientNetwork::isServer() {

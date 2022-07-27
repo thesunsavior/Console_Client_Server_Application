@@ -9,10 +9,10 @@
 #include "pipe.h"
 #include "server_network.h"
 
-class ClientPipe : public Pipe {
+class ClientPipe{
   public:
-  void init() ;
-  void send(char *packets, int32_t totalSize) {};
+  void init();
+  void send(char *packets, int32_t totalSize){};
   void receive(char *recvbuf);
 
   bool connectToAdmin();

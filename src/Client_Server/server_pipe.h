@@ -8,7 +8,7 @@
 
 #include "pipe.h"
 
-class ServerPipe : public Pipe {
+class ServerPipe {
   public:
   static void init();
   static void send(char *packets, int totalSize);

@@ -57,7 +57,7 @@ void Admin::connectRead() {
 
 //establish a read pipe and write pipe for a new client
 void Admin::init() {
-  if (this->is_send){
+  if (this->is_send) {
     //set up admin write pipe
     std::cout << "Creating admin write named pipe...";
     this->admin_Write_Pipe = CreateNamedPipe(
@@ -77,7 +77,7 @@ void Admin::init() {
     }
 
     std::cout << "Admin Write pipe sucessfully created" << std::endl;
-  }else {
+  } else {
 
     //set up admin read pipe
     std::cout << "Creating admin read named pipe...";
@@ -98,7 +98,6 @@ void Admin::init() {
     }
     std::cout << "Admin read pipe sucessfully created" << std::endl;
   }
-
 }
 
 void Admin::receive(char *recvbuf) {
