@@ -13,8 +13,6 @@
 #include "network_data.h"
 #include "server_pipe.h"
 
-#pragma comment(lib, "Ws2_32.lib")
-
 class ServerNetwork {
   public:
   const char* DEFAULT_PORT = "6881";

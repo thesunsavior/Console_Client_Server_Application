@@ -1,6 +1,3 @@
-//
-// Created by trungpq on 7/22/2022.
-//
 #include <process.h>
 
 #include "admin.h"

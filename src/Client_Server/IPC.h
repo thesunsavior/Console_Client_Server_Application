@@ -1,7 +1,3 @@
-//
-// Created by trungpq on 7/22/2022.
-//
-
 #ifndef CLIENTSERVER_IPC_H
 #define CLIENTSERVER_IPC_H
 

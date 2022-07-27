@@ -13,11 +13,6 @@
 #include "network_data.h"
 #include "server_network.h"
 
-// Need to link with Ws2_32.lib, Mswsock.lib, and Advapi32.lib
-#pragma comment(lib, "Ws2_32.lib")
-#pragma comment(lib, "Mswsock.lib")
-#pragma comment(lib, "AdvApi32.lib")
-
 class ClientNetwork {
   public:
   const char *const DEFAULT_PORT = "6881";

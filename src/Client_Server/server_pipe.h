@@ -24,4 +24,4 @@ class ServerPipe {
   static HANDLE admin_write_pipe;
   static HANDLE admin_read_pipe;
 };
-#endif//FINALTASK_SERVERPIPE_H
+#endif

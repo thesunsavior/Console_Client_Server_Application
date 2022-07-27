@@ -13,8 +13,6 @@
 
 #include "network_data.h"
 
-#pragma comment(lib, "Ws2_32.lib")
-
 class Admin {
   public:
   Admin();

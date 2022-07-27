@@ -25,6 +25,16 @@ add_executable(Client_Server
         src/Client_Server/server_pipe.cpp
         src/Client_Server/server_pipe.h)
 
+
+target_link_libraries(Client_Server
+        PUBLIC ws2_32
+        PUBLIC Mswsock
+        PUBLIC AdvApi32)
+
+target_link_libraries(Admin
+        PUBLIC ws2_32
+        PUBLIC Mswsock
+        PUBLIC AdvApi32)
+
 target_include_directories(Admin PUBLIC src/Admin)
 target_include_directories(Client_Server PUBLIC src/Client_Server)
-target_link_libraries(Admin wsock32 ws2_32)

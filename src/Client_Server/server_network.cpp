@@ -6,7 +6,6 @@
 #include <iostream>
 #include <thread>
 
-
 ServerNetwork::ServerNetwork() {}
 
 // send data to all clients
