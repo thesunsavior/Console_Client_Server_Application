@@ -35,7 +35,7 @@ void ServerPipe::init() {
   std::cout << "Complete!" << std::endl;
 }
 
-void ServerPipe::send(char *packets, int32_t totalSize,HANDLE myPipe) {
+void ServerPipe::send(char *packets, int32_t totalSize, HANDLE myPipe) {
   std::cout << "Sending data to client...";
 
 
@@ -43,7 +43,7 @@ void ServerPipe::send(char *packets, int32_t totalSize,HANDLE myPipe) {
   DWORD numBytesWritten = 0;
 
   iResult = WriteFile(
-      myPipe,            // handle to our outbound pipe
+      myPipe,          // handle to our outbound pipe
       packets,         // data to send
       totalSize,       // length of data to send (bytes)
       &numBytesWritten,// will store actual amount of data sent

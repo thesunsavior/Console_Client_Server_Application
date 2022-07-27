@@ -1,5 +1,5 @@
-#ifndef FINALTASK_ADMIN_H
-#define FINALTASK_ADMIN_H
+#ifndef ADMIN_ADMIN_H
+#define ADMIN_ADMIN_H
 
 #include <Windows.h>
 #include <tchar.h>
@@ -53,4 +53,4 @@ class Admin {
   char *send_content;
   int client_id;
 };
-#endif//FINALTASK_ADMIN_H
+#endif

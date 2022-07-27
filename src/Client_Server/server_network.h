@@ -3,10 +3,9 @@
 #include <Windows.h>
 #include <tchar.h>
 #include <unistd.h>
+#include <winbase.h>
 #include <winsock2.h>
 #include <ws2tcpip.h>
-#include <winbase.h>
-
 
 #include <cstdint>
 #include <map>
@@ -23,7 +22,7 @@ class ServerNetwork {
 
   // helper function
   // send data to all clients
-  static void sendToAll(char* packets, int32_t totalSize,HANDLE myPipe);
+  static void sendToAll(char* packets, int32_t totalSize, HANDLE myPipe);
 
   //main thing
   // continue checking and sending to client

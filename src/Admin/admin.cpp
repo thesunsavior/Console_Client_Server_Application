@@ -4,7 +4,7 @@
 #include <iostream>
 
 int Admin::total_process;
-int Admin::count_down =0;
+int Admin::count_down = 0;
 
 
 std::string GetLastErrorAsString() {
@@ -165,7 +165,7 @@ void Admin::receiveFromClients() {
     std::cout << "ADMIN has receive packet " << std::endl;
 
     if (strcmp(network_data, "INIT_CONNECTION") == 0) {
-      std::cout << "ADMIN initializing CLIENT ID "<< total_process + 1<< std::endl;
+      std::cout << "ADMIN initializing CLIENT ID " << total_process + 1 << std::endl;
       total_process++;
       count_down = total_process;
     } else if (strcmp(network_data, "ACTION_EVENT") == 0) {
@@ -173,7 +173,7 @@ void Admin::receiveFromClients() {
     } else if (strcmp(network_data, "DEAD_SERVER") == 0) {
       std::cout << "Dead Reported" << std::endl;
       count_down--;
-      std::cout << count_down <<" Has not reported on "<<total_process<<" total"<< std::endl;
+      std::cout << count_down << " Has not reported on " << total_process << " total" << std::endl;
 
       if (count_down <= 0) {
         total_process--;
@@ -193,9 +193,6 @@ void Admin::serverAssign() {
 }
 
 void Admin::update() {
-  //  connectWrite();
-  //  connectRead();
-
   if (is_send) {
     std::cout << "This turn is for sending message" << std::endl;
     iResult = false;

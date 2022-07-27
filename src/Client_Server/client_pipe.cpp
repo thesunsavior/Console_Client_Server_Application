@@ -47,13 +47,12 @@ void ClientPipe::connect() {
       FILE_ATTRIBUTE_NORMAL,
       nullptr);
 
-  if (pipe == nullptr || pipe == INVALID_HANDLE_VALUE ) {
+  if (pipe == nullptr || pipe == INVALID_HANDLE_VALUE) {
     std::cout << "Server Connection failed...error:" << GetLastErrorAsString() << std::endl;
     return;
   }
 
   std::cout << "Reconnected!" << std::endl;
-
 }
 
 void ClientPipe::init() {
@@ -73,7 +72,7 @@ void ClientPipe::init() {
       FILE_ATTRIBUTE_NORMAL,
       nullptr);
 
-  if (pipe == nullptr || pipe == INVALID_HANDLE_VALUE ) {
+  if (pipe == nullptr || pipe == INVALID_HANDLE_VALUE) {
     std::cout << "Server Connection failed...error:" << GetLastErrorAsString() << std::endl;
     std::cout << "Reporting to admin" << std::endl;
 
@@ -204,7 +203,7 @@ void ClientPipe::receiveFromAdmin(char *recvbuf) {
 
 void ClientPipe::receive(char *recvbuf) {
 
-  if (reported){
+  if (reported) {
     CloseHandle(pipe);
     connect();
   }
@@ -236,7 +235,7 @@ void ClientPipe::receive(char *recvbuf) {
       sendPackageToAdmin("DEAD_SERVER");
       reported = true;
 
-      sleep(rand()%5);
+      sleep(rand() % 5);
 
       return;
     }

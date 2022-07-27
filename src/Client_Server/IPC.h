@@ -12,4 +12,4 @@ class IPC {
   static void receive(char *recvbuf){};
 };
 
-#endif//FINALTASK_IPC_H
+#endif

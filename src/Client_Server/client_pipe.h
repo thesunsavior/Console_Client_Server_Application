@@ -9,7 +9,7 @@
 #include "pipe.h"
 #include "server_network.h"
 
-class ClientPipe{
+class ClientPipe {
   public:
   void init();
   void send(char *packets, int32_t totalSize){};

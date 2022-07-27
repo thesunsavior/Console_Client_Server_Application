@@ -49,8 +49,8 @@ void ClientNetwork::update() {
 
 
   std::cout << "Client-time report: " << network_data << std::endl;
-  CloseHandle(pipe_controller.admin_read_pipe);
-  CloseHandle(pipe_controller.admin_write_pipe);
+  CloseHandle(ClientPipe::admin_read_pipe);
+  CloseHandle(ClientPipe::admin_write_pipe);
 }
 
 bool ClientNetwork::isServer() {
@@ -59,9 +59,9 @@ bool ClientNetwork::isServer() {
 
 void ClientNetwork::makeServer() {
   this->is_server = true;
-  CloseHandle(pipe_controller.pipe);
-  CloseHandle(pipe_controller.admin_read_pipe);
-  CloseHandle(pipe_controller.admin_write_pipe);
+  CloseHandle(ClientPipe::pipe);
+  CloseHandle(ClientPipe::admin_read_pipe);
+  CloseHandle(ClientPipe::admin_write_pipe);
   std::cout << "***************************************** SERVER INIT ****************************************" << std::endl;
 }
 

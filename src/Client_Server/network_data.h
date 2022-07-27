@@ -21,8 +21,7 @@ enum PacketTypes {
 
 class Packet {
   public:
-  unsigned int packet_type;
-  unsigned int id;
+  uint32_t packet_type;
 
   void serialize(char* data) {
     memcpy(data, this, sizeof(Packet));

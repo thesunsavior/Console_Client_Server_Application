@@ -11,12 +11,12 @@ int main() {
   HANDLE h_thread = nullptr;
   for (;;) {
     admin.init();
-    if (admin.is_send){
+    if (admin.is_send) {
       admin.connectWrite();
       if (!admin.iResult && GetLastError() != ERROR_PIPE_CONNECTED) {
         continue;
       }
-    }else {
+    } else {
       admin.connectRead();
       if (!admin.iResult && GetLastError() != ERROR_PIPE_CONNECTED) {
         continue;
