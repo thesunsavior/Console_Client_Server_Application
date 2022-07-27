@@ -7,10 +7,6 @@
 
 Admin admin;
 
-void update() {
-  admin.update();
-}
-
 int main() {
   HANDLE h_thread = nullptr;
   for (;;) {
@@ -24,7 +20,7 @@ int main() {
       continue;
     }
 
-    update();
+    admin.update();
   }
 
   return 0;

@@ -157,18 +157,19 @@ void ClientPipe::receiveFromAdmin(char *recvbuf) {
 
   DWORD total_available_bytes;
 
-  char *temp = "";
-  PeekNamedPipe(admin_write_pipe,
-                0,
-                0,
+  char temp[10000];
+  PeekNamedPipe(&admin_write_pipe,
+                &temp,
+                10000,
                 0,
                 &total_available_bytes,
                 0);
 
-  if (total_available_bytes <= 0) {
+  if (strlen(temp) == 0) {
     std::cout << "Nothing in admin pipe" << std::endl;
     return;
   }
+  std::cout<<"temp Value: "<<temp<<" Length: "<<strlen(temp)<<std::endl;
 
   std::cout << "Client Reading data from Admin pipe...";
   // The read operation will block until there is data to read

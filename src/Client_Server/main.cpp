@@ -13,7 +13,6 @@ int main() {
       ServerNetwork::update();
     } else {
       client->update();
-      client->sendActionPackets();
     }
   }
 

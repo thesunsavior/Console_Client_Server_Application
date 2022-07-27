@@ -198,4 +198,6 @@ void Admin::update() {
     std::cout << "This turn is for reading message" << std::endl;
     receiveFromClients();
   }
+  CloseHandle(admin_Read_Pipe);
+  CloseHandle(admin_Write_Pipe);
 }
