@@ -42,6 +42,7 @@ class Admin {
   const int DEFAULT_BUFLEN = 512;
   const char *DEFAULT_PORT = "6881";
   bool is_send;
+  static int total_process;
 
   private:
   HANDLE admin_Write_Pipe;
@@ -50,7 +51,6 @@ class Admin {
   char network_data[MAX_PACKET_SIZE];
   char *send_content;
   int client_id;
-  int total_process;
   int count_down;
 };
 #endif//FINALTASK_ADMIN_H

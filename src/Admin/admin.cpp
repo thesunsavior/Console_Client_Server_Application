@@ -3,6 +3,9 @@
 #include <cstdio>
 #include <iostream>
 
+int Admin::total_process;
+
+
 std::string GetLastErrorAsString() {
   //Get the error message ID, if any.
   DWORD errorMessageID = ::GetLastError();
@@ -162,7 +165,7 @@ void Admin::receiveFromClients() {
     printf("ADMIN has receive packet\n");
 
     if (strcmp(network_data, "INIT_CONNECTION") == 0) {
-      printf("ADMIN initializing CLIENT ID %d\n", client_id + 1);
+      printf("ADMIN initializing CLIENT ID %d\n", total_process + 1);
       total_process++;
       count_down = total_process;
     } else if (strcmp(network_data, "ACTION_EVENT") == 0) {
