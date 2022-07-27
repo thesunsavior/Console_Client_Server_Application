@@ -20,17 +20,20 @@ void ServerNetwork::receiveFromClients() {
 
 
 void ServerNetwork::sendActionPackets() {
-  //get current time
-  time_t rawtime;
-  struct tm* timeinfo;
-  char buffer[80];
+  while (true){
+    //get current time
+    time_t rawtime;
+    struct tm* timeinfo;
+    char buffer[80];
 
-  time(&rawtime);
-  timeinfo = localtime(&rawtime);
+    time(&rawtime);
+    timeinfo = localtime(&rawtime);
 
-  strftime(buffer, sizeof(buffer), "%d-%m-%Y %H:%M:%S", timeinfo);
+    strftime(buffer, sizeof(buffer), "%d-%m-%Y %H:%M:%S", timeinfo);
 
-  sendToAll(buffer, sizeof(buffer));
+    sendToAll(buffer, sizeof(buffer));
+  }
+
 }
 
 
@@ -43,4 +46,6 @@ void ServerNetwork::update() {
   }
 
   std::thread t1(&ServerNetwork::sendActionPackets);
+
+  t1.join();
 }
