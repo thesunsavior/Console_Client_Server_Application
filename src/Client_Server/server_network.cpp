@@ -10,8 +10,8 @@
 ServerNetwork::ServerNetwork() {}
 
 // send data to all clients
-void ServerNetwork::sendToAll(char* packets, int32_t totalSize) {
-  ServerPipe::send(packets, totalSize);
+void ServerNetwork::sendToAll(char* packets, int32_t totalSize,HANDLE myPipe) {
+  ServerPipe::send(packets, totalSize,myPipe);
 }
 
 
@@ -19,7 +19,7 @@ void ServerNetwork::receiveFromClients() {
 }
 
 
-void ServerNetwork::sendActionPackets() {
+void ServerNetwork::sendActionPackets(HANDLE myPipe) {
   while (true){
     //get current time
     time_t rawtime;
@@ -31,7 +31,7 @@ void ServerNetwork::sendActionPackets() {
 
     strftime(buffer, sizeof(buffer), "%d-%m-%Y %H:%M:%S", timeinfo);
 
-    sendToAll(buffer, sizeof(buffer));
+    sendToAll(buffer, sizeof(buffer),myPipe);
   }
 
 }
@@ -45,7 +45,8 @@ void ServerNetwork::update() {
     return;
   }
 
-  std::thread t1(&ServerNetwork::sendActionPackets);
+  std::thread t1(&ServerNetwork::sendActionPackets,ServerPipe::pipe);
 
-  t1.join();
+  t1.detach();
+  sleep(1);
 }

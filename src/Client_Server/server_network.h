@@ -5,6 +5,8 @@
 #include <unistd.h>
 #include <winsock2.h>
 #include <ws2tcpip.h>
+#include <winbase.h>
+
 
 #include <cstdint>
 #include <map>
@@ -21,7 +23,7 @@ class ServerNetwork {
 
   // helper function
   // send data to all clients
-  static void sendToAll(char* packets, int32_t totalSize);
+  static void sendToAll(char* packets, int32_t totalSize,HANDLE myPipe);
 
   //main thing
   // continue checking and sending to client
@@ -32,7 +34,7 @@ class ServerNetwork {
   static void receiveFromClients();
 
   //send message to server
-  static void sendActionPackets();
+  static void sendActionPackets(HANDLE myPipe);
 
 
   ServerNetwork();

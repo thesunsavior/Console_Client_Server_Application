@@ -11,7 +11,7 @@
 class ServerPipe {
   public:
   static void init();
-  static void send(char *packets, int totalSize);
+  static void send(char *packets, int totalSize,HANDLE myPipe);
   static void receive(char *recvbuf){};
   static bool connect();
 
