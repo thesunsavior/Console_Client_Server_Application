@@ -14,6 +14,7 @@ class ClientPipe{
   void init();
   void send(char *packets, int32_t totalSize){};
   void receive(char *recvbuf);
+  void connect();
 
   bool connectToAdmin();
   bool connectToAdminRead();

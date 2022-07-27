@@ -33,6 +33,29 @@ std::string GetLastErrorAsString() {
   return message;
 }
 
+void ClientPipe::connect() {
+  std::cout << "Connecting to server pipe...";
+
+  // Open the named pipe
+  // Most of these parameters aren't very relevant for pipes.
+  pipe = CreateFile(
+      _T("\\\\.\\pipe\\my_pipe"),
+      GENERIC_READ,// only need read access
+      FILE_SHARE_READ | FILE_SHARE_WRITE,
+      nullptr,
+      OPEN_EXISTING,
+      FILE_ATTRIBUTE_NORMAL,
+      nullptr);
+
+  if (pipe == nullptr || pipe == INVALID_HANDLE_VALUE ) {
+    std::cout << "Server Connection failed...error:" << GetLastErrorAsString() << std::endl;
+    return;
+  }
+
+  std::cout << "Reconnected!" << std::endl;
+
+}
+
 void ClientPipe::init() {
 
   sendPackageToAdmin("INIT_CONNECTION");
@@ -50,7 +73,7 @@ void ClientPipe::init() {
       FILE_ATTRIBUTE_NORMAL,
       nullptr);
 
-  if (pipe == nullptr || pipe == INVALID_HANDLE_VALUE) {
+  if (pipe == nullptr || pipe == INVALID_HANDLE_VALUE ) {
     std::cout << "Server Connection failed...error:" << GetLastErrorAsString() << std::endl;
     std::cout << "Reporting to admin" << std::endl;
 
@@ -180,6 +203,12 @@ void ClientPipe::receiveFromAdmin(char *recvbuf) {
 }
 
 void ClientPipe::receive(char *recvbuf) {
+
+  if (reported){
+    CloseHandle(pipe);
+    connect();
+  }
+
   std::cout << "Client Reading data from pipe...";
   // The read operation will block until there is data to read
 
