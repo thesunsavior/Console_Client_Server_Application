@@ -39,7 +39,7 @@ void ServerNetwork::sendActionPackets(HANDLE myPipe) {
     std::string crrTime = serializeTimePoint(t, "UTC: %Y-%m-%d %H:%M:%S");
 
     char buffer[80];
-    strcpy(buffer,crrTime.c_str());
+    strcpy(buffer, crrTime.c_str());
 
     sendToAll(buffer, sizeof(buffer), myPipe);
   }
