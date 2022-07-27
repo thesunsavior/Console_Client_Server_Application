@@ -113,7 +113,7 @@ bool ClientPipe::connectToAdminWrite() {
 void ClientPipe::sendToAdmin(char *packets, int32_t totalSize) {
 
   std::cout << "Connecting to admin..." << std::endl;
-  while (!connectToAdminWrite()) { sleep(rand() % 3); };
+//  while (!connectToAdminWrite()) { sleep(rand() % 3); };
   while (!connectToAdminRead()) { sleep(rand() % 3); };
 
   std::cout << "Sending data to admin..." << std::endl;
@@ -148,28 +148,32 @@ void ClientPipe::sendPackageToAdmin(char *type) {
 
 void ClientPipe::receiveFromAdmin(char *recvbuf) {
   std::cout << "Connecting to admin..." << std::endl;
-  if (!connectToAdminWrite()) {
+  while (!connectToAdminWrite()) {
     std::cout << "Connection failed...error:" << GetLastErrorAsString() << std::endl;
-    return;
+    if(GetLastError() == ERROR_INVALID_HANDLE || GetLastError() == ERROR_FILE_NOT_FOUND)
+      return;
+    //    return;
   }
-  while (!connectToAdminRead())
-    ;
+//  while (!connectToAdminRead()){
+//
+//  }
+//    ;
 
-  DWORD total_available_bytes;
-
-  char temp[10000];
-  PeekNamedPipe(&admin_write_pipe,
-                &temp,
-                10000,
-                0,
-                &total_available_bytes,
-                0);
-
-  if (strlen(temp) == 0) {
-    std::cout << "Nothing in admin pipe" << std::endl;
-    return;
-  }
-  std::cout<<"temp Value: "<<temp<<" Length: "<<strlen(temp)<<std::endl;
+//  DWORD total_available_bytes;
+//
+//  char temp[10000];
+//  PeekNamedPipe(&admin_write_pipe,
+//                &temp,
+//                10000,
+//                0,
+//                &total_available_bytes,
+//                0);
+//
+//  if (strlen(temp) == 0) {
+//    std::cout << "Nothing in admin pipe" << std::endl;
+//    return;
+//  }
+//  std::cout<<"temp Value: "<<temp<<" Length: "<<strlen(temp)<<std::endl;
 
   std::cout << "Client Reading data from Admin pipe...";
   // The read operation will block until there is data to read

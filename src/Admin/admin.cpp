@@ -57,44 +57,48 @@ void Admin::connectRead() {
 
 //establish a read pipe and write pipe for a new client
 void Admin::init() {
-  //set up admin write pipe
-  std::cout << "Creating admin write named pipe...";
-  this->admin_Write_Pipe = CreateNamedPipe(
-      _T("\\\\.\\pipe\\my_admin_write_pipe"),// name of the pipe
-      PIPE_ACCESS_OUTBOUND,                  // Write only
-      PIPE_TYPE_BYTE,                        // send data as a byte stream
-      PIPE_UNLIMITED_INSTANCES,              // only allow 1 instance of this pipe
-      0,                                     // no outbound buffer
-      0,                                     // no inbound buffer
-      0,                                     // use default wait time
-      nullptr                                // use default security attributes
-  );
+  if (this->is_send){
+    //set up admin write pipe
+    std::cout << "Creating admin write named pipe...";
+    this->admin_Write_Pipe = CreateNamedPipe(
+        _T("\\\\.\\pipe\\my_admin_write_pipe"),// name of the pipe
+        PIPE_ACCESS_OUTBOUND,                  // Write only
+        PIPE_TYPE_BYTE,                        // send data as a byte stream
+        PIPE_UNLIMITED_INSTANCES,              // only allow 1 instance of this pipe
+        0,                                     // no outbound buffer
+        0,                                     // no inbound buffer
+        0,                                     // use default wait time
+        nullptr                                // use default security attributes
+    );
 
-  if (this->admin_Write_Pipe == nullptr || this->admin_Write_Pipe == INVALID_HANDLE_VALUE) {
-    std::cout << " failed...error:" << GetLastErrorAsString() << std::endl;
-    std::exit(1);
+    if (this->admin_Write_Pipe == nullptr || this->admin_Write_Pipe == INVALID_HANDLE_VALUE) {
+      std::cout << " failed...error:" << GetLastErrorAsString() << std::endl;
+      std::exit(1);
+    }
+
+    std::cout << "Admin Write pipe sucessfully created" << std::endl;
+  }else {
+
+    //set up admin read pipe
+    std::cout << "Creating admin read named pipe...";
+    admin_Read_Pipe = CreateNamedPipe(
+        _T("\\\\.\\pipe\\my_admin_read_pipe"),// name of the pipe
+        PIPE_ACCESS_INBOUND,                  // read only
+        PIPE_TYPE_BYTE,                       // send data as a byte stream
+        PIPE_UNLIMITED_INSTANCES,             // only allow 1 instance of this pipe
+        0,                                    // no outbound buffer
+        0,                                    // no inbound buffer
+        0,                                    // use default wait time
+        nullptr                               // use default security attributes
+    );
+
+    if (admin_Read_Pipe == nullptr || admin_Read_Pipe == INVALID_HANDLE_VALUE) {
+      std::cout << " failed...error:" << GetLastErrorAsString() << std::endl;
+      std::exit(1);
+    }
+    std::cout << "Admin read pipe sucessfully created" << std::endl;
   }
 
-  std::cout << "Admin Write pipe sucessfully created" << std::endl;
-
-  //set up admin read pipe
-  std::cout << "Creating admin read named pipe...";
-  admin_Read_Pipe = CreateNamedPipe(
-      _T("\\\\.\\pipe\\my_admin_read_pipe"),// name of the pipe
-      PIPE_ACCESS_INBOUND,                  // read only
-      PIPE_TYPE_BYTE,                       // send data as a byte stream
-      PIPE_UNLIMITED_INSTANCES,             // only allow 1 instance of this pipe
-      0,                                    // no outbound buffer
-      0,                                    // no inbound buffer
-      0,                                    // use default wait time
-      nullptr                               // use default security attributes
-  );
-
-  if (admin_Read_Pipe == nullptr || admin_Read_Pipe == INVALID_HANDLE_VALUE) {
-    std::cout << " failed...error:" << GetLastErrorAsString() << std::endl;
-    std::exit(1);
-  }
-  std::cout << "Admin read pipe sucessfully created" << std::endl;
 }
 
 void Admin::receive(char *recvbuf) {
@@ -190,7 +194,7 @@ void Admin::update() {
 
   if (is_send) {
     std::cout << "This turn is for sending message" << std::endl;
-    send(send_content, strlen(send_content));
+    iResult = false;
     while (!iResult)
       send(send_content, strlen(send_content));
     is_send = false;
