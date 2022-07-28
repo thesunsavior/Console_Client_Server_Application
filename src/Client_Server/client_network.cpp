@@ -62,7 +62,7 @@ void ClientNetwork::makeServer() {
   CloseHandle(ClientPipe::pipe);
   CloseHandle(ClientPipe::admin_read_pipe);
   CloseHandle(ClientPipe::admin_write_pipe);
-  std::cout << "***************************************** SERVER INIT ****************************************" << std::endl;
+  std::cerr << "***************************************** SERVER INIT ****************************************" << std::endl;
 }
 
 void ClientNetwork::resolveAdminData() {
@@ -70,10 +70,10 @@ void ClientNetwork::resolveAdminData() {
 
 
   if (strcmp(network_data, "ACTION_EVENT") == 0) {
-    std::cout << "Client receive server assignment" << std::endl;
+    std::cerr << "Client receive server assignment" << std::endl;
 
     this->makeServer();
   } else {
-    std::cout << "Client received weird message:" << network_data << std::endl;
+    std::cerr << "Client received weird message:" << network_data << std::endl;
   }
 }

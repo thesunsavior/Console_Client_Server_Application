@@ -1,10 +1,15 @@
 #include <process.h>
+#include <iostream>
 
 #include "admin.h"
 
 Admin admin;
 
 int main() {
+  freopen( "admin_error.txt", "w", stderr );
+
+  std::cerr<<"---Admin activity---"<<std::endl;
+
   HANDLE h_thread = nullptr;
   for (;;) {
     admin.init();

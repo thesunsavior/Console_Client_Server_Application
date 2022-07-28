@@ -28,4 +28,4 @@ class Packet {
     memcpy(this, data, sizeof(Packet));
   }
 };
-#endif//TASK7_NETWORKDATA_H
+#endif

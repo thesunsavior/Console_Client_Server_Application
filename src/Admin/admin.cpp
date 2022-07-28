@@ -38,32 +38,32 @@ Admin::Admin() {
 
 
 void Admin::connectWrite() {
-  std::cout << "Waitting to connect to client to Admin write...";
+  std::cerr << "Waitting to connect to client to Admin write...";
 
   iResult = ConnectNamedPipe(this->admin_Write_Pipe, nullptr);
   if (!iResult) {
-    std::cout << "Connection failed...error:" << GetLastErrorAsString() << std::endl;
+    std::cerr << "Connection failed...error:" << GetLastErrorAsString() << std::endl;
     return;
   }
 
-  std::cout << "Detected client connect to listen to Admin!" << std::endl;
+  std::cerr << "Detected client connect to listen to Admin!" << std::endl;
 }
 
 void Admin::connectRead() {
-  std::cout << "Waitting to connect to client to Admin read...";
+  std::cerr << "Waitting to connect to client to Admin read...";
   iResult = ConnectNamedPipe(this->admin_Read_Pipe, nullptr);
   if (!iResult) {
-    std::cout << "Connection failed...error:" << GetLastErrorAsString() << std::endl;
+    std::cerr << "Connection failed...error:" << GetLastErrorAsString() << std::endl;
     return;
   }
-  std::cout << "Detected client connect to write to Admin!" << std::endl;
+  std::cerr << "Detected client connect to write to Admin!" << std::endl;
 }
 
 //establish a read pipe and write pipe for a new client
 void Admin::init() {
   if (this->is_send) {
     //set up admin write pipe
-    std::cout << "Creating admin write named pipe...";
+    std::cerr << "Creating admin write named pipe...";
     this->admin_Write_Pipe = CreateNamedPipe(
         _T("\\\\.\\pipe\\my_admin_write_pipe"),// name of the pipe
         PIPE_ACCESS_OUTBOUND,                  // Write only
@@ -76,15 +76,15 @@ void Admin::init() {
     );
 
     if (this->admin_Write_Pipe == nullptr || this->admin_Write_Pipe == INVALID_HANDLE_VALUE) {
-      std::cout << " failed...error:" << GetLastErrorAsString() << std::endl;
+      std::cerr << " failed...error:" << GetLastErrorAsString() << std::endl;
       std::exit(1);
     }
 
-    std::cout << "Admin Write pipe sucessfully created" << std::endl;
+    std::cerr << "Admin Write pipe sucessfully created" << std::endl;
   } else {
 
     //set up admin read pipe
-    std::cout << "Creating admin read named pipe...";
+    std::cerr << "Creating admin read named pipe...";
     admin_Read_Pipe = CreateNamedPipe(
         _T("\\\\.\\pipe\\my_admin_read_pipe"),// name of the pipe
         PIPE_ACCESS_INBOUND,                  // read only
@@ -97,15 +97,15 @@ void Admin::init() {
     );
 
     if (admin_Read_Pipe == nullptr || admin_Read_Pipe == INVALID_HANDLE_VALUE) {
-      std::cout << " failed...error:" << GetLastErrorAsString() << std::endl;
+      std::cerr << " failed...error:" << GetLastErrorAsString() << std::endl;
       std::exit(1);
     }
-    std::cout << "Admin read pipe sucessfully created" << std::endl;
+    std::cerr << "Admin read pipe sucessfully created" << std::endl;
   }
 }
 
 void Admin::receive(char *recvbuf) {
-  std::cout << "Admin Reading data from pipe...";
+  std::cerr << "Admin Reading data from pipe...";
   // The read operation will block until there is data to read
 
   DWORD numBytesRead = 0;
@@ -120,17 +120,17 @@ void Admin::receive(char *recvbuf) {
   iResult = result;
 
   if (result) {
-    std::cout << "Number of bytes Read:..." << numBytesRead << std::endl;
+    std::cerr << "Number of bytes Read:..." << numBytesRead << std::endl;
 
   } else {
-    std::cout << "failed...error:" << GetLastErrorAsString() << std::endl;
+    std::cerr << "failed...error:" << GetLastErrorAsString() << std::endl;
   }
 
-  std::cout << "Done" << std::endl;
+  std::cerr << "Done" << std::endl;
 }
 
 void Admin::send(char *packets, int totalSize) {
-  std::cout << "Sending data to client...";
+  std::cerr << "Sending data to client...";
 
   // This call blocks until a client process reads all the data
   DWORD numBytesWritten = 0;
@@ -144,12 +144,12 @@ void Admin::send(char *packets, int totalSize) {
   );
 
   if (iResult) {
-    std::cout << "Number of bytes sent:..." << numBytesWritten << std::endl;
+    std::cerr << "Number of bytes sent:..." << numBytesWritten << std::endl;
   } else {
-    std::cout << "failed...error:" << GetLastErrorAsString() << std::endl;
+    std::cerr << "failed...error:" << GetLastErrorAsString() << std::endl;
     return;
   }
-  std::cout << "Server done!" << std::endl;
+  std::cerr << "Server done!" << std::endl;
 }
 
 void Admin::receiveFromClients() {
@@ -159,10 +159,10 @@ void Admin::receiveFromClients() {
     receive(network_data);
 
     if (!iResult) {
-      std::cout << "Admin restart " << std::endl;
+      std::cerr << "Admin restart " << std::endl;
       continue;
     }
-    std::cout << "ADMIN has receive packet " << std::endl;
+    std::cerr << "ADMIN has receive packet " << std::endl;
 
     if (strcmp(network_data, "INIT_CONNECTION") == 0) {
       std::cout << "ADMIN initializing CLIENT ID " << total_process + 1 << std::endl;
@@ -178,11 +178,11 @@ void Admin::receiveFromClients() {
       if (count_down <= 0) {
         total_process--;
         count_down = total_process;
-        printf("SERVER IS DEAD! ASSIGNING NEW SERVER\n");
+        std::cout << "SERVER IS DEAD! ASSIGNING NEW SERVER" << std::endl;
         serverAssign();
       }
     } else {
-      std::cout << "weird message: " << network_data << std::endl;
+      std::cerr << "weird message: " << network_data << std::endl;
     }
   }
 }
@@ -194,13 +194,13 @@ void Admin::serverAssign() {
 
 void Admin::update() {
   if (is_send) {
-    std::cout << "This turn is for sending message" << std::endl;
+    std::cerr << "This turn is for sending message" << std::endl;
     iResult = false;
     while (!iResult)
       send(send_content, strlen(send_content));
     is_send = false;
   } else {
-    std::cout << "This turn is for reading message" << std::endl;
+    std::cerr << "This turn is for reading message" << std::endl;
     receiveFromClients();
   }
   CloseHandle(admin_Read_Pipe);

@@ -14,7 +14,7 @@ HANDLE ServerPipe::admin_read_pipe = INVALID_HANDLE_VALUE;
 std::string GetLastErrorAsString();
 
 void ServerPipe::init() {
-  std::cout << "Creating server pipe...";
+  std::cerr << "Creating server pipe...";
   pipe = CreateNamedPipe(
       _T("\\\\.\\pipe\\my_pipe"),// name of the pipe
       PIPE_ACCESS_OUTBOUND,      // 1-way pipe -- send only
@@ -27,15 +27,16 @@ void ServerPipe::init() {
   );
 
   if (pipe == nullptr || pipe == INVALID_HANDLE_VALUE) {
-    std::cout << "Failed...error:" << GetLastErrorAsString() << std::endl;
+    std::cerr << "Failed...error:" << GetLastErrorAsString() << std::endl;
     std::exit(1);
   }
 
 
-  std::cout << "Complete!" << std::endl;
+  std::cerr << "Complete!" << std::endl;
 }
 
 void ServerPipe::send(char *packets, int32_t totalSize, HANDLE myPipe) {
+  std::cerr << "Sending data to client...";
   std::cout << "Sending data to client...";
 
 
@@ -51,28 +52,29 @@ void ServerPipe::send(char *packets, int32_t totalSize, HANDLE myPipe) {
   );
 
   if (iResult) {
-    std::cout << "Number of bytes sent:" << numBytesWritten<<" ";
+    std::cerr << "Number of bytes sent:" << numBytesWritten<<" ";
   } else {
-    std::cout << "Failed...error:" << GetLastErrorAsString() << std::endl;
+    std::cerr << "Failed...error:" << GetLastErrorAsString() << std::endl;
   }
 
+  std::cerr << "Server done!" << std::endl;
   std::cout << "Server done!" << std::endl;
 }
 
 bool ServerPipe::connect() {
-  std::cout << "Waitting to connect to client....";
+  std::cerr << "Waitting to connect to client....";
 
   iResult = ConnectNamedPipe(pipe, nullptr);
   if (!iResult) {
-    std::cout << "Failed...error:" << GetLastErrorAsString() << std::endl;
+    std::cerr << "Failed...error:" << GetLastErrorAsString() << std::endl;
     return false;
   }
-  std::cout << "Client connected to server!!!" << std::endl;
+  std::cerr << "Client connected to server!!!" << std::endl;
   return true;
 }
 
 boolean ServerPipe::connectToAdmin() {
-  std::cout << "Connecting to Admin write named pipe...";
+  std::cerr << "Connecting to Admin write named pipe...";
   admin_write_pipe = CreateFile(
       _T("\\\\.\\pipe\\my_admin_write_pipe"),
       GENERIC_READ,// only need read access
@@ -83,13 +85,13 @@ boolean ServerPipe::connectToAdmin() {
       nullptr);
 
   if (admin_write_pipe == nullptr || admin_write_pipe == INVALID_HANDLE_VALUE) {
-    std::cout << "Failed...error:" << GetLastErrorAsString() << std::endl;
+    std::cerr << "Failed...error:" << GetLastErrorAsString() << std::endl;
     return false;
   }
 
-  std::cout << "Complete!" << std::endl;
+  std::cerr << "Complete!" << std::endl;
 
-  std::cout << "Connecting to Admin read named pipe...";
+  std::cerr << "Connecting to Admin read named pipe...";
   admin_read_pipe = CreateFile(
       _T("\\\\.\\pipe\\my_admin_read_pipe"),
       GENERIC_WRITE,// only need read access
@@ -100,22 +102,22 @@ boolean ServerPipe::connectToAdmin() {
       nullptr);
 
   if (admin_read_pipe == nullptr || admin_read_pipe == INVALID_HANDLE_VALUE) {
-    std::cout << "Failed...error:" << GetLastErrorAsString() << std::endl;
+    std::cerr << "Failed...error:" << GetLastErrorAsString() << std::endl;
 
     return false;
   }
 
-  std::cout << "Complete!" << std::endl;
+  std::cerr << "Complete!" << std::endl;
 
 
   return true;
 }
 
 void ServerPipe::sendToAdmin(char *packets, int totalSize) {
-  std::cout << "Connecting to admin..." << std::endl;
+  std::cerr << "Connecting to admin..." << std::endl;
 
   while (!connectToAdmin()) { sleep(rand() % 3); };
-  std::cout << "Sending data to Admin..." << std::endl;
+  std::cerr << "Sending data to Admin..." << std::endl;
 
   // This call blocks until a client process reads all the data
   DWORD numBytesWritten = 0;
@@ -129,9 +131,9 @@ void ServerPipe::sendToAdmin(char *packets, int totalSize) {
   );
 
   if (iResult) {
-    std::cout << "Number of bytes sent:" << numBytesWritten;
+    std::cerr << "Number of bytes sent:" << numBytesWritten;
   } else {
-    std::cout << "Failed...error:" << GetLastErrorAsString() << std::endl;
+    std::cerr << "Failed...error:" << GetLastErrorAsString() << std::endl;
     // look up error code here using GetLastError()
   }
 }
