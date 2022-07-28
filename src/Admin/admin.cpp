@@ -3,6 +3,7 @@
 #include <cstdio>
 #include <iostream>
 
+#include "Logger.h"
 int Admin::total_process;
 int Admin::count_down = 0;
 
@@ -38,32 +39,32 @@ Admin::Admin() {
 
 
 void Admin::connectWrite() {
-  std::cerr << "Waitting to connect to client to Admin write...";
+  LOG() << "Waitting to connect to client to Admin write...";
 
   iResult = ConnectNamedPipe(this->admin_Write_Pipe, nullptr);
   if (!iResult) {
-    std::cerr << "Connection failed...error:" << GetLastErrorAsString() << std::endl;
+    LOG(ERRORS) << "Connection failed...error:" << GetLastErrorAsString();
     return;
   }
 
-  std::cerr << "Detected client connect to listen to Admin!" << std::endl;
+  LOG(INFO) << "Detected client connect to listen to Admin!";
 }
 
 void Admin::connectRead() {
-  std::cerr << "Waitting to connect to client to Admin read...";
+  LOG() << "Waitting to connect to client to Admin read...";
   iResult = ConnectNamedPipe(this->admin_Read_Pipe, nullptr);
   if (!iResult) {
-    std::cerr << "Connection failed...error:" << GetLastErrorAsString() << std::endl;
+    LOG(ERRORS) << "Connection failed...error:" << GetLastErrorAsString();
     return;
   }
-  std::cerr << "Detected client connect to write to Admin!" << std::endl;
+  LOG(INFO) << "Detected client connect to write to Admin!";
 }
 
 //establish a read pipe and write pipe for a new client
 void Admin::init() {
   if (this->is_send) {
     //set up admin write pipe
-    std::cerr << "Creating admin write named pipe...";
+    LOG() << "Creating admin write named pipe...";
     this->admin_Write_Pipe = CreateNamedPipe(
         _T("\\\\.\\pipe\\my_admin_write_pipe"),// name of the pipe
         PIPE_ACCESS_OUTBOUND,                  // Write only
@@ -76,15 +77,15 @@ void Admin::init() {
     );
 
     if (this->admin_Write_Pipe == nullptr || this->admin_Write_Pipe == INVALID_HANDLE_VALUE) {
-      std::cerr << " failed...error:" << GetLastErrorAsString() << std::endl;
+      LOG(ERRORS) << " failed...error:" << GetLastErrorAsString();
       std::exit(1);
     }
 
-    std::cerr << "Admin Write pipe sucessfully created" << std::endl;
+    LOG() << "Admin Write pipe sucessfully created";
   } else {
 
     //set up admin read pipe
-    std::cerr << "Creating admin read named pipe...";
+    LOG() << "Creating admin read named pipe...";
     admin_Read_Pipe = CreateNamedPipe(
         _T("\\\\.\\pipe\\my_admin_read_pipe"),// name of the pipe
         PIPE_ACCESS_INBOUND,                  // read only
@@ -97,15 +98,15 @@ void Admin::init() {
     );
 
     if (admin_Read_Pipe == nullptr || admin_Read_Pipe == INVALID_HANDLE_VALUE) {
-      std::cerr << " failed...error:" << GetLastErrorAsString() << std::endl;
+      LOG(ERRORS) << " failed...error:" << GetLastErrorAsString();
       std::exit(1);
     }
-    std::cerr << "Admin read pipe sucessfully created" << std::endl;
+    LOG() << "Admin read pipe sucessfully created";
   }
 }
 
 void Admin::receive(char *recvbuf) {
-  std::cerr << "Admin Reading data from pipe...";
+  LOG() << "Admin Reading data from pipe...";
   // The read operation will block until there is data to read
 
   DWORD numBytesRead = 0;
@@ -120,17 +121,17 @@ void Admin::receive(char *recvbuf) {
   iResult = result;
 
   if (result) {
-    std::cerr << "Number of bytes Read:..." << numBytesRead << std::endl;
+    LOG() << "Number of bytes Read:..." << numBytesRead;
 
   } else {
-    std::cerr << "failed...error:" << GetLastErrorAsString() << std::endl;
+    LOG(ERRORS) << "failed...error:" << GetLastErrorAsString();
   }
 
-  std::cerr << "Done" << std::endl;
+  LOG() << "Done";
 }
 
 void Admin::send(char *packets, int totalSize) {
-  std::cerr << "Sending data to client...";
+  LOG() << "Sending data to client...";
 
   // This call blocks until a client process reads all the data
   DWORD numBytesWritten = 0;
@@ -144,12 +145,12 @@ void Admin::send(char *packets, int totalSize) {
   );
 
   if (iResult) {
-    std::cerr << "Number of bytes sent:..." << numBytesWritten << std::endl;
+    LOG() << "Number of bytes sent:..." << numBytesWritten;
   } else {
-    std::cerr << "failed...error:" << GetLastErrorAsString() << std::endl;
+    LOG() << "failed...error:" << GetLastErrorAsString();
     return;
   }
-  std::cerr << "Server done!" << std::endl;
+  LOG() << "Server done!";
 }
 
 void Admin::receiveFromClients() {
@@ -159,10 +160,10 @@ void Admin::receiveFromClients() {
     receive(network_data);
 
     if (!iResult) {
-      std::cerr << "Admin restart " << std::endl;
+      LOG() << "Admin restart ";
       continue;
     }
-    std::cerr << "ADMIN has receive packet " << std::endl;
+    LOG() << "ADMIN has receive packet ";
 
     if (strcmp(network_data, "INIT_CONNECTION") == 0) {
       std::cout << "ADMIN initializing CLIENT ID " << total_process + 1 << std::endl;
@@ -182,7 +183,7 @@ void Admin::receiveFromClients() {
         serverAssign();
       }
     } else {
-      std::cerr << "weird message: " << network_data << std::endl;
+      LOG() << "weird message: " << network_data;
     }
   }
 }
@@ -194,13 +195,13 @@ void Admin::serverAssign() {
 
 void Admin::update() {
   if (is_send) {
-    std::cerr << "This turn is for sending message" << std::endl;
+    LOG() << "This turn is for sending message";
     iResult = false;
     while (!iResult)
       send(send_content, strlen(send_content));
     is_send = false;
   } else {
-    std::cerr << "This turn is for reading message" << std::endl;
+    LOG() << "This turn is for reading message";
     receiveFromClients();
   }
   CloseHandle(admin_Read_Pipe);

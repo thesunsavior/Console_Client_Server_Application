@@ -4,6 +4,7 @@
 
 #include <iostream>
 
+#include "Logger.h"
 
 ClientNetwork::ClientNetwork(bool is_server) {
   this->is_server = is_server;
@@ -47,7 +48,7 @@ void ClientNetwork::update() {
   memset(network_data, 0, sizeof network_data);
   receivePackets(network_data);
 
-
+  LOG(DEBUG) << "Client-time report: " << network_data;
   std::cout << "Client-time report: " << network_data << std::endl;
   CloseHandle(ClientPipe::admin_read_pipe);
   CloseHandle(ClientPipe::admin_write_pipe);
@@ -62,7 +63,7 @@ void ClientNetwork::makeServer() {
   CloseHandle(ClientPipe::pipe);
   CloseHandle(ClientPipe::admin_read_pipe);
   CloseHandle(ClientPipe::admin_write_pipe);
-  std::cerr << "***************************************** SERVER INIT ****************************************" << std::endl;
+  LOG(INFO) << "***************************************** SERVER INIT ****************************************";
 }
 
 void ClientNetwork::resolveAdminData() {
@@ -70,10 +71,10 @@ void ClientNetwork::resolveAdminData() {
 
 
   if (strcmp(network_data, "ACTION_EVENT") == 0) {
-    std::cerr << "Client receive server assignment" << std::endl;
+    LOG(INFO) << "Client receive server assignment";
 
     this->makeServer();
   } else {
-    std::cerr << "Client received weird message:" << network_data << std::endl;
+    LOG(DEBUG) << "Client received weird message:" << network_data;
   }
 }

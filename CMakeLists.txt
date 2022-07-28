@@ -9,7 +9,7 @@ add_executable(Admin
         src/Admin/admin.h
         src/Admin/admin_process.cpp
         src/Admin/network_data.h
-        )
+        src/Admin/Logger.h)
 
 add_executable(Client_Server
         src/Client_Server/client_network.cpp
@@ -23,7 +23,7 @@ add_executable(Client_Server
         src/Client_Server/server_network.cpp
         src/Client_Server/server_network.h
         src/Client_Server/server_pipe.cpp
-        src/Client_Server/server_pipe.h)
+        src/Client_Server/server_pipe.h src/Client_Server/Logger.h)
 
 
 target_link_libraries(Client_Server

@@ -6,6 +6,7 @@
 #include <chrono>
 #include <iostream>
 
+#include "Logger.h"
 int32_t ServerPipe::iResult = true;
 HANDLE ServerPipe::pipe = INVALID_HANDLE_VALUE;
 HANDLE ServerPipe::admin_write_pipe = INVALID_HANDLE_VALUE;
@@ -14,7 +15,7 @@ HANDLE ServerPipe::admin_read_pipe = INVALID_HANDLE_VALUE;
 std::string GetLastErrorAsString();
 
 void ServerPipe::init() {
-  std::cerr << "Creating server pipe...";
+  LOG() << "Creating server pipe...";
   pipe = CreateNamedPipe(
       _T("\\\\.\\pipe\\my_pipe"),// name of the pipe
       PIPE_ACCESS_OUTBOUND,      // 1-way pipe -- send only
@@ -27,16 +28,16 @@ void ServerPipe::init() {
   );
 
   if (pipe == nullptr || pipe == INVALID_HANDLE_VALUE) {
-    std::cerr << "Failed...error:" << GetLastErrorAsString() << std::endl;
+    LOG(ERRORS) << "Failed...error:" << GetLastErrorAsString();
     std::exit(1);
   }
 
 
-  std::cerr << "Complete!" << std::endl;
+  LOG() << "Complete!";
 }
 
 void ServerPipe::send(char *packets, int32_t totalSize, HANDLE myPipe) {
-  std::cerr << "Sending data to client...";
+  LOG() << "Sending data to client...";
   std::cout << "Sending data to client...";
 
 
@@ -52,29 +53,29 @@ void ServerPipe::send(char *packets, int32_t totalSize, HANDLE myPipe) {
   );
 
   if (iResult) {
-    std::cerr << "Number of bytes sent:" << numBytesWritten<<" ";
+    LOG() << "Number of bytes sent:" << numBytesWritten << " ";
   } else {
-    std::cerr << "Failed...error:" << GetLastErrorAsString() << std::endl;
+    LOG(ERRORS) << "Failed...error:" << GetLastErrorAsString();
   }
 
-  std::cerr << "Server done!" << std::endl;
+  LOG() << "Server done!";
   std::cout << "Server done!" << std::endl;
 }
 
 bool ServerPipe::connect() {
-  std::cerr << "Waitting to connect to client....";
+  LOG() << "Waitting to connect to client....";
 
   iResult = ConnectNamedPipe(pipe, nullptr);
   if (!iResult) {
-    std::cerr << "Failed...error:" << GetLastErrorAsString() << std::endl;
+    LOG(ERRORS) << "Failed...error:" << GetLastErrorAsString();
     return false;
   }
-  std::cerr << "Client connected to server!!!" << std::endl;
+  LOG() << "Client connected to server!!!";
   return true;
 }
 
 boolean ServerPipe::connectToAdmin() {
-  std::cerr << "Connecting to Admin write named pipe...";
+  LOG() << "Connecting to Admin write named pipe...";
   admin_write_pipe = CreateFile(
       _T("\\\\.\\pipe\\my_admin_write_pipe"),
       GENERIC_READ,// only need read access
@@ -85,13 +86,13 @@ boolean ServerPipe::connectToAdmin() {
       nullptr);
 
   if (admin_write_pipe == nullptr || admin_write_pipe == INVALID_HANDLE_VALUE) {
-    std::cerr << "Failed...error:" << GetLastErrorAsString() << std::endl;
+    LOG(ERRORS) << "Failed...error:" << GetLastErrorAsString();
     return false;
   }
 
-  std::cerr << "Complete!" << std::endl;
+  LOG() << "Complete!";
 
-  std::cerr << "Connecting to Admin read named pipe...";
+  LOG() << "Connecting to Admin read named pipe...";
   admin_read_pipe = CreateFile(
       _T("\\\\.\\pipe\\my_admin_read_pipe"),
       GENERIC_WRITE,// only need read access
@@ -102,22 +103,22 @@ boolean ServerPipe::connectToAdmin() {
       nullptr);
 
   if (admin_read_pipe == nullptr || admin_read_pipe == INVALID_HANDLE_VALUE) {
-    std::cerr << "Failed...error:" << GetLastErrorAsString() << std::endl;
+    LOG(ERRORS) << "Failed...error:" << GetLastErrorAsString();
 
     return false;
   }
 
-  std::cerr << "Complete!" << std::endl;
+  LOG() << "Complete!";
 
 
   return true;
 }
 
 void ServerPipe::sendToAdmin(char *packets, int totalSize) {
-  std::cerr << "Connecting to admin..." << std::endl;
+  LOG() << "Connecting to admin...";
 
   while (!connectToAdmin()) { sleep(rand() % 3); };
-  std::cerr << "Sending data to Admin..." << std::endl;
+  LOG() << "Sending data to Admin...";
 
   // This call blocks until a client process reads all the data
   DWORD numBytesWritten = 0;
@@ -131,10 +132,9 @@ void ServerPipe::sendToAdmin(char *packets, int totalSize) {
   );
 
   if (iResult) {
-    std::cerr << "Number of bytes sent:" << numBytesWritten;
+    LOG() << "Number of bytes sent:" << numBytesWritten;
   } else {
-    std::cerr << "Failed...error:" << GetLastErrorAsString() << std::endl;
-    // look up error code here using GetLastError()
+    LOG(ERRORS) << "Failed...error:" << GetLastErrorAsString();
   }
 }
 

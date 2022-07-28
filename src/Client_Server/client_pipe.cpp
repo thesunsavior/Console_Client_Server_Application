@@ -5,6 +5,8 @@
 
 #include <iostream>
 
+#include "Logger.h"
+
 HANDLE ClientPipe::pipe = INVALID_HANDLE_VALUE;
 HANDLE ClientPipe::admin_read_pipe = INVALID_HANDLE_VALUE;
 HANDLE ClientPipe::admin_write_pipe = INVALID_HANDLE_VALUE;
@@ -34,7 +36,7 @@ std::string GetLastErrorAsString() {
 }
 
 void ClientPipe::connect() {
-  std::cerr << "Connecting to server pipe...";
+  LOG(DEBUG) << "Connecting to server pipe...";
 
   // Open the named pipe
   // Most of these parameters aren't very relevant for pipes.
@@ -48,18 +50,18 @@ void ClientPipe::connect() {
       nullptr);
 
   if (pipe == nullptr || pipe == INVALID_HANDLE_VALUE) {
-    std::cerr << "Server Connection failed...error:" << GetLastErrorAsString() << std::endl;
+    LOG(ERRORS) << "Server Connection failed...error:" << GetLastErrorAsString();
     return;
   }
 
-  std::cerr << "Reconnected!" << std::endl;
+  LOG(DEBUG) << "Reconnected!";
 }
 
 void ClientPipe::init() {
 
   sendPackageToAdmin("INIT_CONNECTION");
 
-  std::cerr << "Connecting to server pipe...";
+  LOG() << "Connecting to server pipe...";
 
   // Open the named pipe
   // Most of these parameters aren't very relevant for pipes.
@@ -73,8 +75,8 @@ void ClientPipe::init() {
       nullptr);
 
   if (pipe == nullptr || pipe == INVALID_HANDLE_VALUE) {
-    std::cerr << "Server Connection failed...error:" << GetLastErrorAsString() << std::endl;
-    std::cerr << "Reporting to admin" << std::endl;
+    LOG(ERRORS) << "Server Connection failed...error:" << GetLastErrorAsString();
+    LOG(ERRORS) << "Reporting to admin";
 
     // look up error code here using GetLastError()
 
@@ -85,7 +87,7 @@ void ClientPipe::init() {
     return;
   }
 
-  std::cerr << "Complete!" << std::endl;
+  LOG() << "Connection process completed!";
 }
 
 bool ClientPipe::connectToAdmin() {
@@ -93,7 +95,7 @@ bool ClientPipe::connectToAdmin() {
 }
 
 bool ClientPipe::connectToAdminRead() {
-  std::cerr << "Connecting to Admin read named pipe...";
+  LOG() << "Connecting to Admin read named pipe...";
   admin_read_pipe = CreateFile(
       _T("\\\\.\\pipe\\my_admin_read_pipe"),
       GENERIC_WRITE,// only need read access
@@ -104,16 +106,16 @@ bool ClientPipe::connectToAdminRead() {
       nullptr);
 
   if (admin_read_pipe == nullptr || admin_read_pipe == INVALID_HANDLE_VALUE) {
-    std::cerr << "Connection failed...error:" << GetLastErrorAsString() << std::endl;
+    LOG(ERRORS) << "Connection failed...error:" << GetLastErrorAsString();
     return false;
   }
 
-  std::cerr << "Complete" << std::endl;
+  LOG() << "Connection completed!";
   return true;
 }
 
 bool ClientPipe::connectToAdminWrite() {
-  std::cerr << "Connecting to Admin write named pipe...";
+  LOG() << "Connecting to Admin write named pipe...";
   admin_write_pipe = CreateFile(
       _T("\\\\.\\pipe\\my_admin_write_pipe"),
       GENERIC_READ,// only need read access
@@ -124,22 +126,22 @@ bool ClientPipe::connectToAdminWrite() {
       nullptr);
 
   if (admin_write_pipe == nullptr || admin_write_pipe == INVALID_HANDLE_VALUE) {
-    std::cerr << "Connection failed...error:" << GetLastErrorAsString() << std::endl;
+    LOG(ERRORS) << "Connection failed...error:" << GetLastErrorAsString();
     return false;
   }
 
-  std::cerr << "Complete" << std::endl;
+  LOG() << "Connection completed!";
 
   return true;
 }
 
 void ClientPipe::sendToAdmin(char *packets, int32_t totalSize) {
 
-  std::cerr << "Connecting to admin..." << std::endl;
+  LOG() << "Connecting to admin...";
   //  while (!connectToAdminWrite()) { sleep(rand() % 3); };
   while (!connectToAdminRead()) { sleep(rand() % 3); };
 
-  std::cerr << "Sending data to admin..." << std::endl;
+  LOG() << "Sending data to admin...";
 
   // This call blocks until a client process reads all the data
   DWORD numBytesWritten = 0;
@@ -153,9 +155,9 @@ void ClientPipe::sendToAdmin(char *packets, int32_t totalSize) {
   );
 
   if (iResult) {
-    std::cerr << "Number of bytes sent:" << numBytesWritten << std::endl;
+    LOG(ERRORS) << "Number of bytes sent:" << numBytesWritten;
   } else {
-    std::cerr << "Failed to send...error:" << GetLastErrorAsString() << std::endl;
+    LOG(ERRORS) << "Failed to send...error:" << GetLastErrorAsString();
   }
 }
 
@@ -170,16 +172,15 @@ void ClientPipe::sendPackageToAdmin(char *type) {
 }
 
 void ClientPipe::receiveFromAdmin(char *recvbuf) {
-  std::cerr << "Connecting to admin..." << std::endl;
+  LOG() << "Connecting to admin...";
   while (!connectToAdminWrite()) {
-    std::cerr << "Connection failed...error:" << GetLastErrorAsString() << std::endl;
+    LOG(ERRORS) << "Connection failed...error:" << GetLastErrorAsString();
     if (GetLastError() == ERROR_INVALID_HANDLE || GetLastError() == ERROR_FILE_NOT_FOUND)
       return;
     //    return;
   }
 
-  std::cerr << "Client Reading data from Admin pipe...";
-  std::cerr << "Client Reading data from Admin pipe...";
+  LOG() << "Client Reading data from Admin pipe...";
 
   // The read operation will block until there is data to read
   DWORD numBytesRead = 0;
@@ -194,13 +195,13 @@ void ClientPipe::receiveFromAdmin(char *recvbuf) {
   iResult = result;
 
   if (result) {
-    std::cerr << "Number of bytes Read:" << numBytesRead << " ";
+    LOG() << "Number of bytes Read:" << numBytesRead << " ";
   } else {
-    std::cerr << "Failed to read data...error:" << GetLastErrorAsString() << std::endl;
+    LOG(ERRORS) << "Failed to read data...error:" << GetLastErrorAsString();
     return;
   }
 
-  std::cerr << "Done!" << std::endl;
+  LOG() << "Done!";
 }
 
 void ClientPipe::receive(char *recvbuf) {
@@ -210,7 +211,7 @@ void ClientPipe::receive(char *recvbuf) {
     connect();
   }
 
-  std::cerr << "Client Reading data from pipe...";
+  LOG() << "Client Reading data from pipe...";
   // The read operation will block until there is data to read
 
   DWORD numBytesRead = 0;
@@ -226,12 +227,12 @@ void ClientPipe::receive(char *recvbuf) {
 
   if (result) {
     reported = false;
-    std::cerr << "Number of bytes Read:" << numBytesRead << std::endl;
+    LOG() << "Number of bytes Read:" << numBytesRead;
   } else {
-    std::cerr << "Failed to read data T.T , error:" << GetLastErrorAsString() << std::endl;
+    LOG(ERRORS) << "Failed to read data T.T , error:" << GetLastErrorAsString();
 
     if (GetLastError() == ERROR_BROKEN_PIPE && !reported) {
-      std::cerr << "Server died, reporting. Wait for assignment" << std::endl;
+      LOG(INFO) << "Server died, reporting. Wait for assignment";
       // look up error code here using GetLastError()
 
       sendPackageToAdmin("DEAD_SERVER");
@@ -243,5 +244,5 @@ void ClientPipe::receive(char *recvbuf) {
     }
   }
 
-  std::cerr << "Done!" << std::endl;
+  LOG() << "Done!";
 }
